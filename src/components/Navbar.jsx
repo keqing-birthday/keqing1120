@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
 import { Menu, X, Music, Play, Pause } from 'lucide-react';
 import { useMusic } from '../context/useMusic';
@@ -7,9 +8,13 @@ import Glass from './Glass';
 import BilibiliIcon from './icons/BilibiliIcon';
 
 const navLinks = [
-  { id: 'home', label: '首页' },
-  { id: 'recruit', label: '招募信息' },
-  { id: 'contact', label: '联系方式' },
+  { id: 'home', label: '首页', to: '/' },
+  { id: 'recruit', label: '招募信息', to: '/#recruit' },
+  { id: 'contact', label: '联系方式', to: '/#contact' },
+];
+
+const rightNavLinks = [
+  { id: 'contributors', label: '贡献者', to: '/contributors' },
 ];
 
 // 右侧外链预留区，后续可直接添加
@@ -26,6 +31,8 @@ export default function Navbar() {
   const [isMusicCardOpen, setIsMusicCardOpen] = useState(false);
   const { isPlaying, currentTrack } = useMusic();
   const musicRef = useRef(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   // 点击外部关闭音乐卡片
   useEffect(() => {
@@ -41,10 +48,25 @@ export default function Navbar() {
   }, [isMusicCardOpen]);
 
   const scrollToSection = (id) => {
+    setIsMobileMenuOpen(false);
+
+    if (id === 'home') {
+      if (location.pathname === '/') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        navigate('/');
+      }
+      return;
+    }
+
+    if (location.pathname !== '/') {
+      navigate('/', { state: { scrollTo: id } });
+      return;
+    }
+
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
-      setIsMobileMenuOpen(false);
     }
   };
 
@@ -72,15 +94,25 @@ export default function Navbar() {
 
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-1">
-                  {navLinks.map(({ id, label }) => (
-                    <button
-                      key={id}
-                      onClick={() => scrollToSection(id)}
-                      className="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:text-keqing-purple dark:hover:text-keqing-purple transition-colors rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
-                    >
-                      {label}
-                    </button>
-                  ))}
+                  {navLinks.map(({ id, label, to }) => {
+                    const isRoute = to && !to.startsWith('/#');
+                    const active = location.pathname === to;
+                    const className = `px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                      active
+                        ? 'text-keqing-purple bg-keqing-purple/10'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-keqing-purple dark:hover:text-keqing-purple hover:bg-black/5 dark:hover:bg-white/5'
+                    }`;
+
+                    return isRoute ? (
+                      <Link key={id} to={to} className={className}>
+                        {label}
+                      </Link>
+                    ) : (
+                      <button key={id} onClick={() => scrollToSection(id)} className={className}>
+                        {label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -103,6 +135,26 @@ export default function Navbar() {
                     ))}
                   </div>
                 )}
+
+                {/* 右侧页面导航 */}
+                <div className="hidden md:flex items-center gap-1 pr-2 border-r border-gray-300/50 dark:border-gray-700/50">
+                  {rightNavLinks.map(({ id, label, to }) => {
+                    const active = location.pathname === to;
+                    return (
+                      <Link
+                        key={id}
+                        to={to}
+                        className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                          active
+                            ? 'text-keqing-purple bg-keqing-purple/10'
+                            : 'text-gray-700 dark:text-gray-300 hover:text-keqing-purple dark:hover:text-keqing-purple hover:bg-black/5 dark:hover:bg-white/5'
+                        }`}
+                      >
+                        {label}
+                      </Link>
+                    );
+                  })}
+                </div>
 
                 <ThemeToggle />
 
@@ -179,11 +231,12 @@ export default function Navbar() {
       >
         <Glass className="w-full shadow-lg shadow-black/5 dark:shadow-black/20" cornerRadius={16}>
           <div className="px-4 py-4 space-y-3">
-            {navLinks.map(({ id, label }, i) => (
-              <button
+            {rightNavLinks.map(({ id, label, to }, i) => (
+              <Link
                 key={id}
-                onClick={() => scrollToSection(id)}
-                className={`block w-full text-left py-2 px-4 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-all duration-200 transform ${
+                to={to}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`block w-full text-left py-2 px-4 rounded-lg transition-all duration-200 transform ${
                   isMobileMenuOpen
                     ? 'opacity-100 translate-x-0'
                     : 'opacity-0 -translate-x-2'
@@ -191,8 +244,38 @@ export default function Navbar() {
                 style={{ transitionDelay: `${i * 25}ms` }}
               >
                 {label}
-              </button>
+              </Link>
             ))}
+
+            {navLinks.map(({ id, label, to }, i) => {
+              const isRoute = to && !to.startsWith('/#');
+              const baseClass = `block w-full text-left py-2 px-4 rounded-lg transition-all duration-200 transform ${
+                isMobileMenuOpen
+                  ? 'opacity-100 translate-x-0'
+                  : 'opacity-0 -translate-x-2'
+              }`;
+
+              return isRoute ? (
+                <Link
+                  key={id}
+                  to={to}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={baseClass}
+                  style={{ transitionDelay: `${(rightNavLinks.length + i) * 25}ms` }}
+                >
+                  {label}
+                </Link>
+              ) : (
+                <button
+                  key={id}
+                  onClick={() => scrollToSection(id)}
+                  className={baseClass}
+                  style={{ transitionDelay: `${(rightNavLinks.length + i) * 25}ms` }}
+                >
+                  {label}
+                </button>
+              );
+            })}
 
             {externalLinks.length > 0 && (
               <div className="pt-3 mt-2 border-t border-gray-300/30 dark:border-gray-700/30 space-y-2">
@@ -209,7 +292,7 @@ export default function Navbar() {
                         ? 'opacity-100 translate-x-0'
                         : 'opacity-0 -translate-x-2'
                     }`}
-                    style={{ transitionDelay: `${(navLinks.length + i) * 25}ms` }}
+                    style={{ transitionDelay: `${(rightNavLinks.length + navLinks.length + i) * 25}ms` }}
                   >
                     {Icon && <Icon size={22} />}
                     <span className="sr-only">{label}</span>

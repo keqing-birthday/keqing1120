@@ -1,28 +1,25 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { MusicProvider } from './context/MusicContext';
 import Navbar from './components/Navbar';
-import HeroSection from './components/HeroSection';
-import CoreContributors from './components/CoreContributors';
-import RecruitPanel from './components/RecruitPanel';
-import ContactPanel from './components/ContactPanel';
-import Footer from './components/Footer';
+import HomePage from './pages/HomePage';
+import AllContributorsPage from './pages/AllContributorsPage';
 import MusicPlayerWidget from './components/MusicPlayerWidget';
 
 function App() {
   return (
     <ThemeProvider>
       <MusicProvider>
-        <div className="min-h-screen bg-[var(--page-bg)] text-[var(--text-primary)] transition-colors duration-300">
-          <Navbar />
-          <main>
-            <HeroSection />
-            <CoreContributors />
-            <RecruitPanel />
-            <ContactPanel />
-          </main>
-          <Footer />
-          <MusicPlayerWidget />
-        </div>
+        <BrowserRouter>
+          <div className="min-h-screen bg-[var(--page-bg)] text-[var(--text-primary)] transition-colors duration-300">
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/contributors" element={<AllContributorsPage />} />
+            </Routes>
+            <MusicPlayerWidget />
+          </div>
+        </BrowserRouter>
       </MusicProvider>
     </ThemeProvider>
   );
