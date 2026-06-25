@@ -12,7 +12,7 @@ const defaultPlaylist = [
 ];
 
 export function MusicProvider({ children }) {
-  const audioRef = useRef(new Audio());
+  const audioRef = useRef(null);
   const [playlist, setPlaylist] = useState(defaultPlaylist);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -36,85 +36,14 @@ export function MusicProvider({ children }) {
   useEffect(() => { playlistRef.current = playlist; }, [playlist]);
   useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
 
-  // 将 audio 元素挂到 DOM，避免某些浏览器回收无 DOM 引用的 Audio 实例导致无声
-  useEffect(() => {
-    const audio = audioRef.current;
+  // 延迟初始化音频实例：首次播放时才创建，避免首页加载 13MB MP3
+  const initAudio = useCallback(() => {
+    if (audioRef.current) return audioRef.current;
+
+    const audio = new Audio();
     audio.id = 'keqing-audio-player';
-    audio.preload = 'metadata';
+    audio.preload = 'none';
     audio.style.display = 'none';
-    document.body.appendChild(audio);
-    return () => {
-      if (audio.parentNode) {
-        audio.parentNode.removeChild(audio);
-      }
-    };
-  }, []);
-
-  // 切换音源：只在当前曲目变化时更新 audio.src，避免每次点击播放都重置加载
-  useEffect(() => {
-    const track = playlistRef.current[currentIndex];
-    if (!track) return;
-
-    const audio = audioRef.current;
-    const currentPath = audio.src ? new URL(audio.src).pathname : '';
-    if (currentPath !== track.src) {
-      audio.src = track.src;
-    }
-  }, [currentIndex]);
-
-  const play = useCallback(() => {
-    const track = playlistRef.current[currentIndex];
-    if (!track) return;
-
-    audioRef.current.play().then(() => {
-      setIsPlaying(true);
-    }).catch((err) => {
-      console.log('Audio play failed:', err.name, err.message);
-    });
-  }, [currentIndex]);
-
-  const pause = useCallback(() => {
-    audioRef.current.pause();
-    setIsPlaying(false);
-  }, []);
-
-  const toggle = useCallback(() => {
-    if (isPlayingRef.current) pause();
-    else play();
-  }, [play, pause]);
-
-  const next = useCallback(() => {
-    setCurrentIndex(prev => {
-      if (playModeRef.current === 2) {
-        return Math.floor(Math.random() * playlistRef.current.length);
-      }
-      return (prev + 1) % playlistRef.current.length;
-    });
-  }, []);
-
-  const prev = useCallback(() => {
-    setCurrentIndex(prev => (prev - 1 + playlistRef.current.length) % playlistRef.current.length);
-  }, []);
-
-  const seek = useCallback((time) => {
-    audioRef.current.currentTime = time;
-    setCurrentTime(time);
-  }, []);
-
-  const setVolume = useCallback((v) => {
-    setVolumeState(v);
-  }, []);
-
-  // 切歌后自动播放
-  useEffect(() => {
-    if (isPlayingRef.current) {
-      play();
-    }
-  }, [currentIndex, play]);
-
-  // 音频事件监听
-  useEffect(() => {
-    const audio = audioRef.current;
     audio.volume = volume;
 
     const updateTime = () => setCurrentTime(audio.currentTime);
@@ -137,17 +66,102 @@ export function MusicProvider({ children }) {
     audio.addEventListener('loadedmetadata', updateDuration);
     audio.addEventListener('ended', handleEnded);
 
-    return () => {
-      audio.removeEventListener('timeupdate', updateTime);
-      audio.removeEventListener('loadedmetadata', updateDuration);
-      audio.removeEventListener('ended', handleEnded);
-    };
+    document.body.appendChild(audio);
+    audioRef.current = audio;
+    return audio;
   }, [volume]);
+
+  // 切换音源：只在当前曲目变化且音频已创建时更新 src
+  useEffect(() => {
+    const track = playlistRef.current[currentIndex];
+    if (!track) return;
+
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const currentPath = audio.src ? new URL(audio.src).pathname : '';
+    if (currentPath !== track.src) {
+      audio.src = track.src;
+    }
+  }, [currentIndex]);
+
+  const play = useCallback(() => {
+    const track = playlistRef.current[currentIndex];
+    if (!track) return;
+
+    const audio = initAudio();
+    const currentPath = audio.src ? new URL(audio.src).pathname : '';
+    if (currentPath !== track.src) {
+      audio.src = track.src;
+    }
+
+    audio.play().then(() => {
+      setIsPlaying(true);
+    }).catch((err) => {
+      console.log('Audio play failed:', err.name, err.message);
+    });
+  }, [currentIndex, initAudio]);
+
+  const pause = useCallback(() => {
+    const audio = audioRef.current;
+    if (audio) audio.pause();
+    setIsPlaying(false);
+  }, []);
+
+  const toggle = useCallback(() => {
+    if (isPlayingRef.current) pause();
+    else play();
+  }, [play, pause]);
+
+  const next = useCallback(() => {
+    setCurrentIndex(prev => {
+      if (playModeRef.current === 2) {
+        return Math.floor(Math.random() * playlistRef.current.length);
+      }
+      return (prev + 1) % playlistRef.current.length;
+    });
+  }, []);
+
+  const prev = useCallback(() => {
+    setCurrentIndex(prev => (prev - 1 + playlistRef.current.length) % playlistRef.current.length);
+  }, []);
+
+  const seek = useCallback((time) => {
+    const audio = audioRef.current;
+    if (audio) audio.currentTime = time;
+    setCurrentTime(time);
+  }, []);
+
+  const setVolume = useCallback((v) => {
+    setVolumeState(v);
+  }, []);
+
+  // 切歌后自动播放
+  useEffect(() => {
+    if (isPlayingRef.current) {
+      play();
+    }
+  }, [currentIndex, play]);
 
   useEffect(() => {
     localStorage.setItem('keqing-volume', volume);
-    audioRef.current.volume = volume;
+    const audio = audioRef.current;
+    if (audio) audio.volume = volume;
   }, [volume]);
+
+  // 卸载时清理音频元素
+  useEffect(() => {
+    return () => {
+      const audio = audioRef.current;
+      if (audio) {
+        audio.pause();
+        if (audio.parentNode) {
+          audio.parentNode.removeChild(audio);
+        }
+        audioRef.current = null;
+      }
+    };
+  }, []);
 
   return (
     <MusicContext.Provider value={{
@@ -160,4 +174,3 @@ export function MusicProvider({ children }) {
     </MusicContext.Provider>
   );
 }
-

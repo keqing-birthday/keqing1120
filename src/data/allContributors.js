@@ -12,7 +12,10 @@ export const allContributors = [
   { name: '玉衡星家的厨子(刻晴厨)', role: '主办', avatar: '/images/direct.webp', bilibili: 'https://space.bilibili.com/3546695900072565' },
   { name: '三代', role: '三维动画与导播', avatar: '/images/b_bfa0f2a5341561b777411c5044f160e9.jpg', bilibili: 'https://space.bilibili.com/1418606' },
   { name: 'ink ECY', role: '剧场与同人作者', avatar: '/images/b_b1c20e6b96481e6271ac9cc1404061e1.jpg', bilibili: 'https://space.bilibili.com/1740529490' },
-  { name: '无事发生之晴', role: '剪辑/七圣召唤', avatar: '', bilibili: '' },
+  { name: '一条梦醒的鱼', role: '剪辑/七圣召唤', avatar: '', bilibili: 'https://space.bilibili.com/348817613' },
+  { name: '艺人小D桑', role: '翻唱/剪辑', avatar: '/images/9a0db07de8e97087eb9a1cd27b8067a7.jpg', bilibili: 'https://space.bilibili.com/442724416' },
+  { name: '蔷薇少女祥瑞', role: '剪纸/同人作者', avatar: '/images/E3755DF02E646EAFE3C278F7C9224CA0.png', bilibili: 'https://space.bilibili.com/502562714' },
+  { name: '玉衡星织', role: '数字影像工程师', avatar: '/images/026-06-25_220956_592.jpg', bilibili: 'https://space.bilibili.com/3493106890574497' },
   // 在此继续添加更多贡献者
   // { name: '示例昵称', role: '示例职位', avatar: '/images/xxx.jpg', bilibili: '' },
 ];

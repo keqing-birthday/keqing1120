@@ -1,6 +1,7 @@
 import { useMusic } from '../context/useMusic';
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, ListMusic } from 'lucide-react';
 import Glass from './Glass';
+import OptimizedImage from './OptimizedImage';
 
 export default function MusicPlayerCard({ compact = false }) {
   const {
@@ -26,7 +27,7 @@ export default function MusicPlayerCard({ compact = false }) {
           {/* 封面 */}
           <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-keqing-purple/10">
             {currentTrack.cover ? (
-              <img
+              <OptimizedImage
                 src={currentTrack.cover}
                 alt={currentTrack.title}
                 className="w-full h-full object-cover"
@@ -76,7 +77,7 @@ export default function MusicPlayerCard({ compact = false }) {
       {/* 封面 */}
       <div className="relative rounded-xl overflow-hidden mb-4 bg-keqing-purple/10 aspect-square">
         {currentTrack.cover ? (
-          <img
+          <OptimizedImage
             src={currentTrack.cover}
             alt={currentTrack.title}
             className={`w-full h-full object-cover ${isPlaying ? 'animate-pulse' : ''}`}

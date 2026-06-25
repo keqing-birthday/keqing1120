@@ -5,6 +5,7 @@ import { Menu, X, Music, Play, Pause } from 'lucide-react';
 import { useMusic } from '../context/useMusic';
 import MusicPlayerCard from './MusicPlayerCard';
 import Glass from './Glass';
+import OptimizedImage from './OptimizedImage';
 import BilibiliIcon from './icons/BilibiliIcon';
 
 const navLinks = [
@@ -79,10 +80,13 @@ export default function Navbar() {
               {/* 左侧：Logo + 目录导航 */}
               <div className="flex items-center gap-2 md:gap-6 min-w-0">
                 <div className="flex items-center gap-2 min-w-0">
-                  <img
+                  <OptimizedImage
                     src="/favicon.png"
                     alt="刻晴生日会"
                     className="w-8 h-8 object-contain flex-shrink-0 rounded-md"
+                    loading="eager"
+                    width={32}
+                    height={32}
                   />
                   <span className="font-title text-xl gradient-text whitespace-nowrap truncate hidden [@media(min-width:380px)]:inline">刻晴生日会</span>
                   {isPlaying && (

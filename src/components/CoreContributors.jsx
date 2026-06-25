@@ -1,6 +1,7 @@
 import { User, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Glass from './Glass';
+import OptimizedImage from './OptimizedImage';
 import { coreContributors } from '../data/coreContributors';
 
 export default function CoreContributors() {
@@ -40,7 +41,7 @@ export default function CoreContributors() {
               >
                 <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-2 border-keqing-purple/30 bg-keqing-purple/10 dark:bg-keqing-purple/20 flex items-center justify-center">
                   {avatar ? (
-                    <img
+                    <OptimizedImage
                       src={avatar}
                       alt={name || '贡献者头像'}
                       className="w-full h-full object-cover"

@@ -12,7 +12,7 @@ export const coreContributors = [
   { name: '玉衡星家的厨子(刻晴厨)', role: '主办', avatar: '/images/direct.webp', bilibili: 'https://space.bilibili.com/3546695900072565' },
   { name: '三代', role: '三维动画与导播', avatar: '/images/b_bfa0f2a5341561b777411c5044f160e9.jpg', bilibili: 'https://space.bilibili.com/1418606' },
   { name: 'ink ECY', role: '剧场与同人作者', avatar: '/images/b_b1c20e6b96481e6271ac9cc1404061e1.jpg', bilibili: 'https://space.bilibili.com/1740529490' },
-  { name: '无事发生之晴', role: '剪辑/七圣召唤', avatar: '', bilibili: '' },
+  { name: '一条梦醒的鱼', role: '剪辑/七圣召唤', avatar: '', bilibili: 'https://space.bilibili.com/348817613' },
   { name: '玉衡星织', role: '数字影像工程师', avatar: '/images/026-06-25_220956_592.jpg', bilibili: 'https://space.bilibili.com/3493106890574497' },
-  { name: '', role: '', avatar: '', bilibili: '' },
+  { name: 'AngelNeko橙', role: '音乐制作', avatar: '/images/98CFC6FEF95864A7EA6C7BA5676E322A.jpg', bilibili: 'https://space.bilibili.com/205873966' },
 ];

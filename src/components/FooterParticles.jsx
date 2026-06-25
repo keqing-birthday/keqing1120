@@ -28,15 +28,21 @@ export default function FooterParticles() {
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
-    let animationId;
+    let animationId = null;
     let particles = [];
+    let isVisible = false;
+    let resizeRaf = null;
 
     const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      ctx.scale(dpr, dpr);
+      if (resizeRaf) return;
+      resizeRaf = requestAnimationFrame(() => {
+        resizeRaf = null;
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+      });
     };
 
     const createParticle = () => {
@@ -58,6 +64,8 @@ export default function FooterParticles() {
     };
 
     const draw = () => {
+      if (!isVisible) return;
+
       const rect = canvas.getBoundingClientRect();
       ctx.clearRect(0, 0, rect.width, rect.height);
 
@@ -82,14 +90,27 @@ export default function FooterParticles() {
       animationId = requestAnimationFrame(draw);
     };
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries[0]?.isIntersecting ?? false;
+        isVisible = visible;
+        if (visible && !animationId) {
+          draw();
+        }
+      },
+      { threshold: 0 }
+    );
+
     resize();
     initParticles();
-    draw();
+    observer.observe(canvas);
 
     window.addEventListener('resize', resize);
 
     return () => {
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
       cancelAnimationFrame(animationId);
+      observer.disconnect();
       window.removeEventListener('resize', resize);
     };
   }, [isDark]);
