@@ -6,10 +6,10 @@ import 'swiper/css/navigation';
 import Glass from './Glass';
 
 const slides = [
-  { img: '/images/birthday-2021.jpg', alt: '2021年刻晴生日' },
-  { img: '/images/birthday-2022.jpg', alt: '2022年刻晴生日' },
-  { img: '/images/birthday-2023.jpg', alt: '2023年刻晴生日' },
-  { img: '/images/birthday-2024.jpg', alt: '2024年刻晴生日' },
+  { src: '/images/birthday-2021.jpg', alt: '2021年刻晴生日' },
+  { src: '/images/birthday-2022.jpg', alt: '2022年刻晴生日' },
+  { src: '/images/birthday-2023.jpg', alt: '2023年刻晴生日' },
+  { src: '/images/birthday-2024.jpg', alt: '2024年刻晴生日' },
 ];
 
 export default function HeroSection() {
@@ -44,8 +44,10 @@ export default function HeroSection() {
                 alt="2026刻晴生日会 需要你的加入"
                 className="w-full max-w-lg mx-auto lg:mx-0 h-auto transition-all duration-300 ease-out"
                 width={1600}
-                height={760}
+                height={759}
                 loading="eager"
+                decoding="async"
+                fetchpriority="high"
               />
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-300 mb-8 max-w-lg mx-auto lg:mx-0 break-words transition-all duration-300 ease-out">
@@ -83,13 +85,16 @@ export default function HeroSection() {
                   loop
                   className="w-full h-full max-w-full max-h-full"
                 >
-                  {slides.map(({ img, alt }, i) => (
+                  {slides.map(({ src, alt }, i) => (
                     <SwiperSlide key={i}>
                       <img
-                        src={img}
+                        src={src}
                         alt={alt}
                         className="w-full h-full object-cover"
+                        width={768}
+                        height={768}
                         loading={i === 0 ? 'eager' : 'lazy'}
+                        decoding="async"
                       />
                     </SwiperSlide>
                   ))}

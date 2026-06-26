@@ -127,6 +127,21 @@ html {
   animation: music-bar 0.8s ease-in-out infinite;
 }
 
+/* 页面进入动画 */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+
 /* Swiper 导航箭头颜色 */
 .swiper-button-prev,
 .swiper-button-next {
