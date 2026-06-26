@@ -17,9 +17,12 @@ export default function Footer() {
         <p className="text-sm text-gray-400 dark:text-gray-400 mb-6">
           由刻晴生贺组「玉衡一心定天衡」制作 · QQ群：231786295
         </p>
-        <div className="text-xs text-gray-400 dark:text-gray-400">
+        <div className="text-xs text-gray-400 dark:text-gray-400 space-y-1">
           <p>© 2026 Keqing Birthday Fan Project. All rights reserved.</p>
-          <p className="mt-1">
+          <p>
+            本网站为同人作品，所涉及的官方游戏角色、图像、音乐等素材版权归米哈游所有。
+          </p>
+          <p>
             Genshin Impact and Keqing are trademarks of miHoYo/HoYoverse.
             This is a fan-made project and is not affiliated with miHoYo.
           </p>
