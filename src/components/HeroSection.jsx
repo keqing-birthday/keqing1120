@@ -41,7 +41,7 @@ export default function HeroSection() {
             <h1 className="mb-4 lg:mt-[5px]">
               <img
                 src="/images/hero-title.png"
-                alt="2026刻晴生日会 需要你的加入"
+                alt="刻晴生日会 需要你的加入"
                 className="w-full max-w-lg mx-auto lg:mx-0 h-auto transition-all duration-300 ease-out"
                 width={1600}
                 height={759}
@@ -51,7 +51,7 @@ export default function HeroSection() {
               />
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-300 mb-8 max-w-lg mx-auto lg:mx-0 break-words transition-all duration-300 ease-out">
-              璃月七星玉衡星刻晴的生日即将到来，我们正在筹备一场盛大的庆典。
+              玉衡星刻晴的生日即将到来，我们正在筹备一场盛大的庆典。
               无论你是才华横溢的创作者，还是热情似火的粉丝，都欢迎加入我们！
             </p>
             <div className="flex flex-col [@media(min-width:375px)]:flex-row flex-wrap gap-3 [@media(min-width:375px)]:gap-4 justify-center lg:justify-start transition-all duration-300 ease-out">
