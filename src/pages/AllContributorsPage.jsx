@@ -27,7 +27,7 @@ export default function AllContributorsPage() {
               全部贡献者名单
             </h1>
             <p className="text-[var(--text-secondary)] max-w-2xl">
-              感谢每一位为刻晴生日会付出心血的朋友，排名不分先后。
+              感谢每一位为刻晴生日会付出心血的老师，排名不分先后。
             </p>
           </div>
 

@@ -16,7 +16,7 @@ export default function CoreContributors() {
               核心贡献者
             </h2>
             <p className="text-center text-gray-500 dark:text-gray-300 max-w-2xl transition-all duration-300 ease-out">
-              感谢每一位为刻晴生日会付出心血的成员。
+              感谢每一位为刻晴生日会付出心血的老师，排名不分先后。
             </p>
           </div>
           <Link
