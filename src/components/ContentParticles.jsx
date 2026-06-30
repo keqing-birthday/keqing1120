@@ -15,6 +15,17 @@ function getServerSnapshot() {
   return false;
 }
 
+const isMobile =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(pointer: coarse)').matches;
+
+// 仅对移动端降级，桌面端保持原有精度
+const PARTICLE_COUNT = isMobile ? 25 : 45;
+const MIST_COUNT = isMobile ? 3 : 7;
+const ENABLE_TRAIL = !isMobile;
+const ENABLE_LIGHTNING = !isMobile;
+const MAX_DPR_MOBILE = 1.5;
+
 export default function ContentParticles() {
   const canvasRef = useRef(null);
   const { theme } = useTheme();
@@ -38,7 +49,9 @@ export default function ContentParticles() {
       if (resizeRaf) return;
       resizeRaf = requestAnimationFrame(() => {
         resizeRaf = null;
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = isMobile
+          ? Math.min(window.devicePixelRatio || 1, MAX_DPR_MOBILE)
+          : window.devicePixelRatio || 1;
         const rect = canvas.getBoundingClientRect();
         canvas.width = rect.width * dpr;
         canvas.height = rect.height * dpr;
@@ -64,7 +77,7 @@ export default function ContentParticles() {
         swayFrequency: Math.random() * 0.008 + 0.004,
         phase: Math.random() * Math.PI * 2,
         trail: [],
-        trailLength: Math.floor(Math.random() * 6 + 10),
+        trailLength: ENABLE_TRAIL ? Math.floor(Math.random() * 6 + 10) : 0,
       };
     };
 
@@ -108,7 +121,7 @@ export default function ContentParticles() {
 
     const drawPetal = (p) => {
       // faint purple trail behind the blossom
-      if (p.trail.length > 1) {
+      if (ENABLE_TRAIL && p.trail.length > 1) {
         ctx.save();
         const start = p.trail[0];
         const gradient = ctx.createLinearGradient(start.x, start.y, p.x, p.y);
@@ -136,7 +149,7 @@ export default function ContentParticles() {
       ctx.rotate(p.rotation);
       ctx.globalAlpha = p.opacity;
       ctx.fillStyle = p.color;
-      ctx.shadowBlur = 14;
+      ctx.shadowBlur = isMobile ? 6 : 14;
       ctx.shadowColor = 'rgba(255, 105, 180, 0.55)';
 
       for (let i = 0; i < 5; i++) {
@@ -170,7 +183,7 @@ export default function ContentParticles() {
       ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
       ctx.fillStyle = p.color;
       ctx.globalAlpha = alpha;
-      ctx.shadowBlur = p.size * 5;
+      ctx.shadowBlur = isMobile ? p.size * 2 : p.size * 5;
       ctx.shadowColor = p.color;
       ctx.fill();
       ctx.shadowBlur = 0;
@@ -300,27 +313,29 @@ export default function ContentParticles() {
       if (isDark) {
         mists.forEach((m) => drawMist(m, rect));
 
-        if (lightning) {
-          lightning.age++;
-          let alpha = 1;
-          if (lightning.age <= 2) {
-            alpha = 1;
-          } else if (lightning.age === 3 || lightning.age === 5) {
-            alpha = 0.35;
-          } else if (lightning.age === 4) {
-            alpha = 0.9;
-          } else {
-            alpha = Math.max(0, 1 - (lightning.age - 6) / (lightning.maxAge - 6));
+        if (ENABLE_LIGHTNING) {
+          if (lightning) {
+            lightning.age++;
+            let alpha;
+            if (lightning.age <= 2) {
+              alpha = 1;
+            } else if (lightning.age === 3 || lightning.age === 5) {
+              alpha = 0.35;
+            } else if (lightning.age === 4) {
+              alpha = 0.9;
+            } else {
+              alpha = Math.max(0, 1 - (lightning.age - 6) / (lightning.maxAge - 6));
+            }
+            drawLightning(rect, alpha);
+            if (lightning.age >= lightning.maxAge) {
+              lightning = null;
+            }
           }
-          drawLightning(rect, alpha);
-          if (lightning.age >= lightning.maxAge) {
-            lightning = null;
+          lightningTimer--;
+          if (lightningTimer <= 0) {
+            lightning = createLightning(rect);
+            lightningTimer = Math.floor(Math.random() * 360 + 240);
           }
-        }
-        lightningTimer--;
-        if (lightningTimer <= 0) {
-          lightning = createLightning(rect);
-          lightningTimer = Math.floor(Math.random() * 360 + 240);
         }
 
         particles.forEach((p, index) => {
@@ -340,9 +355,11 @@ export default function ContentParticles() {
           p.x += p.speedX + Math.sin(p.y * p.swayFrequency + p.phase) * 0.3;
           p.rotation += p.rotationSpeed;
 
-          p.trail.push({ x: p.x, y: p.y });
-          if (p.trail.length > p.trailLength) {
-            p.trail.shift();
+          if (ENABLE_TRAIL) {
+            p.trail.push({ x: p.x, y: p.y });
+            if (p.trail.length > p.trailLength) {
+              p.trail.shift();
+            }
           }
 
           if (p.y > rect.height + 40) {
@@ -358,10 +375,10 @@ export default function ContentParticles() {
     };
 
     const initParticles = () => {
-      particles = Array.from({ length: 45 }, () =>
+      particles = Array.from({ length: PARTICLE_COUNT }, () =>
         isDark ? createDarkParticle(true) : createLightParticle(true)
       );
-      mists = isDark ? Array.from({ length: 7 }, createDarkMist) : [];
+      mists = isDark ? Array.from({ length: MIST_COUNT }, createDarkMist) : [];
     };
 
     const observer = new IntersectionObserver(

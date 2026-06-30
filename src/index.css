@@ -18,7 +18,7 @@
   --border-color: rgba(255, 255, 255, 0.6);
   --border-color-outer: rgba(255, 255, 255, 0.85);
   --shadow-color: rgba(0, 0, 0, 0.1);
-  --glass-blur: 16px;
+  --glass-blur: 12px;
 }
 
 .dark {
@@ -33,7 +33,7 @@
   --border-color: rgba(255, 255, 255, 0.28);
   --border-color-outer: rgba(255, 255, 255, 0.4);
   --shadow-color: rgba(0, 0, 0, 0.45);
-  --glass-blur: 24px;
+  --glass-blur: 18px;
 }
 
 body {
@@ -294,12 +294,14 @@ header.hero-mode button:hover {
 
 .starfield {
   background: radial-gradient(ellipse at bottom, #1b0a2e 0%, #0a0a1a 60%, #050510 100%);
+  contain: layout paint;
 }
 
 .starfield-nebula {
-  filter: blur(60px);
-  opacity: 0.75;
+  filter: blur(45px);
+  opacity: 0.7;
   animation: nebula-drift linear infinite;
+  animation-play-state: var(--starfield-paused, running);
   will-change: transform;
 }
 
@@ -310,6 +312,7 @@ header.hero-mode button:hover {
   animation:
     twinkle ease-in-out infinite,
     star-drift linear infinite;
+  animation-play-state: var(--starfield-paused, running), var(--starfield-paused, running);
   will-change: opacity, transform;
 }
 
@@ -362,4 +365,5 @@ header.hero-mode button:hover {
   transform: translateZ(0);
   backface-visibility: hidden;
   will-change: transform;
+  contain: layout paint;
 }

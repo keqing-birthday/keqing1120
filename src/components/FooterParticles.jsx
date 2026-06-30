@@ -15,6 +15,12 @@ function getServerSnapshot() {
   return false;
 }
 
+const isMobile =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(pointer: coarse)').matches;
+const PARTICLE_COUNT = isMobile ? 16 : 28;
+const MAX_DPR = 2;
+
 export default function FooterParticles() {
   const canvasRef = useRef(null);
   const { theme } = useTheme();
@@ -37,11 +43,11 @@ export default function FooterParticles() {
       if (resizeRaf) return;
       resizeRaf = requestAnimationFrame(() => {
         resizeRaf = null;
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
         const rect = canvas.getBoundingClientRect();
         canvas.width = rect.width * dpr;
         canvas.height = rect.height * dpr;
-        ctx.scale(dpr, dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       });
     };
 
@@ -54,13 +60,13 @@ export default function FooterParticles() {
         speedY: Math.random() * 0.8 + 0.2,
         speedX: (Math.random() - 0.5) * 0.4,
         opacity: Math.random() * 0.5 + 0.2,
-        color: Math.random() > 0.7 ? '#ffd700' : '#da70d6', // 金色或粉色
+        color: Math.random() > 0.7 ? '#ffd700' : '#da70d6',
         life: Math.random() * 100 + 100,
       };
     };
 
     const initParticles = () => {
-      particles = Array.from({ length: 40 }, createParticle);
+      particles = Array.from({ length: PARTICLE_COUNT }, createParticle);
     };
 
     const draw = () => {
