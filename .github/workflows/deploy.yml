@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - dev
 
   # 允许在 Actions 页面手动触发部署
   workflow_dispatch:
