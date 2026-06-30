@@ -19,6 +19,7 @@ export default function Footer() {
         </p>
         <div className="text-xs text-gray-400 dark:text-gray-400 space-y-1">
           <p>© 2026 Keqing Birthday Fan Project. All rights reserved.</p>
+          <p>版本号 v2.0.1</p>
           <p>
             本网站为同人作品，所涉及的官方游戏角色、图像、音乐等素材版权归米哈游所有。
           </p>
