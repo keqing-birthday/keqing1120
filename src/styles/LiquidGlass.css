@@ -7,57 +7,57 @@
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
     filter 0.3s ease;
 
-  /* 玻璃基底：稍微提高不透明度，让文字背景更干净 */
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  /* 玻璃基底：降低不透明度，让底层内容透过来，减少塑料感 */
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   box-shadow:
     /* 悬浮外阴影 */
-    0 12px 34px -10px rgba(0, 0, 0, 0.16),
+    0 12px 34px -10px rgba(0, 0, 0, 0.14),
     /* 顶部边缘高光 */
-    inset 0 1px 1px rgba(255, 255, 255, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.32),
     /* 底部厚度阴影 */
-    inset 0 -1px 1px rgba(0, 0, 0, 0.04);
+    inset 0 -1px 1px rgba(0, 0, 0, 0.03);
 }
 
 .dark .liquid-glass {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
   box-shadow:
-    0 12px 34px -10px rgba(0, 0, 0, 0.35),
-    inset 0 1px 1px rgba(255, 255, 255, 0.18),
-    inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+    0 12px 34px -10px rgba(0, 0, 0, 0.32),
+    inset 0 1px 1px rgba(255, 255, 255, 0.14),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.08);
 }
 
-/* 左上角镜面高光：更小、更淡，避免覆盖文字区域 */
+/* 左上角镜面高光：更淡更散，避免塑料般的强烈反光 */
 .liquid-glass::before {
   content: '';
   position: absolute;
-  top: -45%;
-  left: -45%;
-  width: 75%;
-  height: 75%;
+  top: -50%;
+  left: -50%;
+  width: 85%;
+  height: 85%;
   border-radius: 50%;
   pointer-events: none;
   z-index: 3;
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 0.22) 0%,
-    rgba(255, 255, 255, 0.06) 40%,
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(255, 255, 255, 0.04) 40%,
     transparent 70%
   );
-  filter: blur(18px);
+  filter: blur(22px);
 }
 
 .dark .liquid-glass::before {
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.03) 40%,
+    rgba(255, 255, 255, 0.07) 0%,
+    rgba(255, 255, 255, 0.02) 40%,
     transparent 70%
   );
 }
 
-/* 边缘聚光（透镜/折射感）：更弱，只保留轻微边缘提亮 */
+/* 边缘聚光（透镜/折射感）：进一步减弱，只保留轻微空气感 */
 .liquid-glass::after {
   content: '';
   position: absolute;
@@ -67,42 +67,42 @@
   z-index: 2;
   background: radial-gradient(
     ellipse at 50% 50%,
-    transparent 50%,
-    rgba(255, 255, 255, 0.08) 100%
+    transparent 55%,
+    rgba(255, 255, 255, 0.05) 100%
   );
 }
 
 .dark .liquid-glass::after {
   background: radial-gradient(
     ellipse at 50% 50%,
-    transparent 50%,
-    rgba(255, 255, 255, 0.04) 100%
+    transparent 55%,
+    rgba(255, 255, 255, 0.03) 100%
   );
 }
 
-/* 底层模糊层 */
+/* 底层模糊层：增加模糊强度，让玻璃更通透有层次 */
 .liquid-glass-blur {
   position: absolute;
   inset: 0;
   z-index: 0;
   border-radius: inherit;
   pointer-events: none;
-  backdrop-filter: blur(var(--lg-blur, 6px)) saturate(1.08);
-  -webkit-backdrop-filter: blur(var(--lg-blur, 6px)) saturate(1.08);
-  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(var(--lg-blur, 10px)) saturate(1.06);
+  -webkit-backdrop-filter: blur(var(--lg-blur, 10px)) saturate(1.06);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 @supports not (backdrop-filter: blur(1px)) {
   .liquid-glass-blur {
-    background: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.45);
   }
 
   .dark .liquid-glass-blur {
-    background: rgba(30, 30, 35, 0.72);
+    background: rgba(30, 30, 35, 0.65);
   }
 }
 
-/* 液态高光/折射层：只保留一层很淡的对角高光 */
+/* 液态高光/折射层：更淡，避免塑料光泽 */
 .liquid-glass-sheen {
   position: absolute;
   inset: 0;
@@ -112,9 +112,9 @@
   background:
     linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.14) 0%,
-      transparent 35%,
-      rgba(255, 255, 255, 0.06) 100%
+      rgba(255, 255, 255, 0.09) 0%,
+      transparent 40%,
+      rgba(255, 255, 255, 0.04) 100%
     );
 }
 
@@ -122,35 +122,35 @@
   background:
     linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.07) 0%,
-      transparent 35%,
-      rgba(255, 255, 255, 0.03) 100%
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 40%,
+      rgba(255, 255, 255, 0.02) 100%
     );
 }
 
-/* 边缘高光：降低内发光强度，避免干扰内容阅读 */
+/* 边缘高光：更细更柔，减少塑料边框感 */
 .liquid-glass-edge {
   position: absolute;
   inset: 0;
   z-index: 2;
   border-radius: inherit;
   pointer-events: none;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   box-shadow:
-    inset 0 0 12px rgba(255, 255, 255, 0.12),
-    inset 1px 1px 0 rgba(255, 255, 255, 0.5),
-    inset -1px -1px 0 rgba(255, 255, 255, 0.12);
+    inset 0 0 10px rgba(255, 255, 255, 0.08),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.38),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .dark .liquid-glass-edge {
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.14);
   box-shadow:
-    inset 0 0 12px rgba(255, 255, 255, 0.06),
-    inset 1px 1px 0 rgba(255, 255, 255, 0.25),
-    inset -1px -1px 0 rgba(255, 255, 255, 0.06);
+    inset 0 0 10px rgba(255, 255, 255, 0.04),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.18),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.04);
 }
 
-/* 内反射：大幅减弱，只保留轻微厚度感 */
+/* 内反射：保留轻微厚度感，避免厚重 */
 .liquid-glass-reflect {
   position: absolute;
   inset: var(--lg-edge, 5px);
@@ -158,14 +158,14 @@
   border-radius: calc(var(--lg-radius, 26px) - var(--lg-edge, 5px));
   pointer-events: none;
   box-shadow:
-    inset 1px 1px 5px rgba(255, 255, 255, 0.12),
-    inset -1px -1px 4px rgba(0, 0, 0, 0.03);
+    inset 1px 1px 5px rgba(255, 255, 255, 0.08),
+    inset -1px -1px 4px rgba(0, 0, 0, 0.02);
 }
 
 .dark .liquid-glass-reflect {
   box-shadow:
-    inset 1px 1px 5px rgba(255, 255, 255, 0.06),
-    inset -1px -1px 4px rgba(0, 0, 0, 0.08);
+    inset 1px 1px 5px rgba(255, 255, 255, 0.04),
+    inset -1px -1px 4px rgba(0, 0, 0, 0.06);
 }
 
 /* 与旧 glass-card-hover 一致的悬停动效 */
