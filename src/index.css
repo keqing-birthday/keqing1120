@@ -135,6 +135,30 @@ html:not(.dark) header.hero-mode .glass-card:hover,
   background-color: rgba(70, 70, 120, 0.75) !important;
 }
 
+/* LiquidGlass 版本：浅色模式位于封面区时使用暗色玻璃 */
+header.hero-mode .liquid-glass,
+html.light header.hero-mode .liquid-glass,
+html:not(.dark) header.hero-mode .liquid-glass,
+.light header.hero-mode .liquid-glass,
+:root:not(.dark) header.hero-mode .liquid-glass {
+  background: rgba(55, 55, 95, 0.65) !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+}
+header.hero-mode .liquid-glass:hover,
+html.light header.hero-mode .liquid-glass:hover,
+html:not(.dark) header.hero-mode .liquid-glass:hover,
+.light header.hero-mode .liquid-glass:hover,
+:root:not(.dark) header.hero-mode .liquid-glass:hover {
+  background: rgba(70, 70, 120, 0.75) !important;
+}
+header.hero-mode .liquid-glass-blur,
+html.light header.hero-mode .liquid-glass-blur,
+html:not(.dark) header.hero-mode .liquid-glass-blur,
+.light header.hero-mode .liquid-glass-blur,
+:root:not(.dark) header.hero-mode .liquid-glass-blur {
+  background: transparent !important;
+}
+
 /* 封面区深色导航栏下的文字/图标统一变亮（保留 Logo 渐变） */
 header.hero-mode a,
 header.hero-mode button,
