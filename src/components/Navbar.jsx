@@ -35,7 +35,8 @@ export default function Navbar() {
   const [isOverHero, setIsOverHero] = useState(true);
   const [isDark, setIsDark] = useState(false);
   const { isPlaying, currentTrack } = useMusic();
-  const musicRef = useRef(null);
+  const musicButtonRef = useRef(null);
+  const musicPopupRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -78,7 +79,9 @@ export default function Navbar() {
   // 点击外部关闭音乐卡片
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (musicRef.current && !musicRef.current.contains(e.target)) {
+      const insideButton = musicButtonRef.current && musicButtonRef.current.contains(e.target);
+      const insidePopup = musicPopupRef.current && musicPopupRef.current.contains(e.target);
+      if (!insideButton && !insidePopup) {
         setIsMusicCardOpen(false);
       }
     };
@@ -202,10 +205,11 @@ export default function Navbar() {
 
                 <ThemeToggle />
 
-                {/* 音乐按钮 + 弹出卡片 */}
+                {/* 音乐按钮 */}
                 {currentTrack && (
-                  <div className="2xl:hidden relative" ref={musicRef}>
+                  <div className="2xl:hidden">
                     <button
+                      ref={musicButtonRef}
                       onClick={() => setIsMusicCardOpen(!isMusicCardOpen)}
                       aria-label="音乐播放器"
                       aria-expanded={isMusicCardOpen}
@@ -217,16 +221,6 @@ export default function Navbar() {
                     >
                       {isPlaying ? <Pause size={20} /> : <Play size={20} className="ml-0.5" />}
                     </button>
-
-                    <div
-                      className={`absolute right-0 top-full mt-2 z-50 origin-top-right transition-all duration-200 ease-out ${
-                        isMusicCardOpen
-                          ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
-                          : 'opacity-0 scale-95 -translate-y-1 pointer-events-none'
-                      }`}
-                    >
-                      <MusicPlayerCard />
-                    </div>
                   </div>
                 )}
 
@@ -260,6 +254,20 @@ export default function Navbar() {
             </div>
           </div>
         </LiquidGlass>
+
+        {/* 音乐播放器弹出卡片 */}
+        {currentTrack && (
+          <div
+            ref={musicPopupRef}
+            className={`absolute right-3 md:right-6 top-full mt-2 z-50 origin-top-right transition-all duration-200 ease-out ${
+              isMusicCardOpen
+                ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
+                : 'opacity-0 scale-95 -translate-y-1 pointer-events-none'
+            }`}
+          >
+            <MusicPlayerCard compact />
+          </div>
+        )}
       </nav>
 
       {/* Mobile Menu */}
