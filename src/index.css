@@ -159,6 +159,14 @@ html:not(.dark) header.hero-mode .liquid-glass-blur,
   background: transparent !important;
 }
 
+/* 导航栏 LiquidGlass 在封面区/正常区切换时增加背景与边框过渡 */
+header .liquid-glass {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
 /* 封面区深色导航栏下的文字/图标统一变亮（保留 Logo 渐变） */
 header.hero-mode a,
 header.hero-mode button,
