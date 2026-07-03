@@ -9,7 +9,7 @@ export default function Footer() {
           <span className="font-title text-2xl gradient-text">刻晴生日会</span>
         </p>
         <p className="text-gray-500 dark:text-gray-400 mb-2">
-          璃月七星玉衡星 · 生贺组作品
+          玉衡一心定天衡· 生贺组作品
         </p>
         <p className="text-sm text-gray-400 dark:text-gray-400 mb-4">
           本站为原神角色「刻晴」同人生日庆祝活动页面，非官方内容
