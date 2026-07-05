@@ -118,44 +118,50 @@ html {
   background-color: rgba(255, 255, 255, 0.72);
 }
 
-/* 浅色模式位于封面区时，导航栏使用暗色玻璃外观 */
-header.hero-mode .glass-card,
+/* 封面区：液态玻璃保持通透，通过浅色文字+阴影保证可读性 */
 html.light header.hero-mode .glass-card,
 html:not(.dark) header.hero-mode .glass-card,
 .light header.hero-mode .glass-card,
-:root:not(.dark) header.hero-mode .glass-card {
-  background-color: rgba(55, 55, 95, 0.65) !important;
-  border-color: rgba(255, 255, 255, 0.28) !important;
+:root:not(.dark) header.hero-mode .glass-card,
+html.dark header.hero-mode .glass-card,
+.dark header.hero-mode .glass-card {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
 }
-header.hero-mode .glass-card:hover,
 html.light header.hero-mode .glass-card:hover,
 html:not(.dark) header.hero-mode .glass-card:hover,
 .light header.hero-mode .glass-card:hover,
-:root:not(.dark) header.hero-mode .glass-card:hover {
-  background-color: rgba(70, 70, 120, 0.75) !important;
+:root:not(.dark) header.hero-mode .glass-card:hover,
+html.dark header.hero-mode .glass-card:hover,
+.dark header.hero-mode .glass-card:hover {
+  background-color: rgba(255, 255, 255, 0.12) !important;
 }
 
-/* LiquidGlass 版本：浅色模式位于封面区时使用暗色玻璃 */
-header.hero-mode .liquid-glass,
+/* LiquidGlass 版本：封面区保持通透 */
 html.light header.hero-mode .liquid-glass,
 html:not(.dark) header.hero-mode .liquid-glass,
 .light header.hero-mode .liquid-glass,
-:root:not(.dark) header.hero-mode .liquid-glass {
-  background: rgba(55, 55, 95, 0.65) !important;
-  border-color: rgba(255, 255, 255, 0.28) !important;
+:root:not(.dark) header.hero-mode .liquid-glass,
+html.dark header.hero-mode .liquid-glass,
+.dark header.hero-mode .liquid-glass {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
 }
-header.hero-mode .liquid-glass:hover,
 html.light header.hero-mode .liquid-glass:hover,
 html:not(.dark) header.hero-mode .liquid-glass:hover,
 .light header.hero-mode .liquid-glass:hover,
-:root:not(.dark) header.hero-mode .liquid-glass:hover {
-  background: rgba(70, 70, 120, 0.75) !important;
+:root:not(.dark) header.hero-mode .liquid-glass:hover,
+html.dark header.hero-mode .liquid-glass:hover,
+.dark header.hero-mode .liquid-glass:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
 }
-header.hero-mode .liquid-glass-blur,
+
 html.light header.hero-mode .liquid-glass-blur,
 html:not(.dark) header.hero-mode .liquid-glass-blur,
 .light header.hero-mode .liquid-glass-blur,
-:root:not(.dark) header.hero-mode .liquid-glass-blur {
+:root:not(.dark) header.hero-mode .liquid-glass-blur,
+html.dark header.hero-mode .liquid-glass-blur,
+.dark header.hero-mode .liquid-glass-blur {
   background: transparent !important;
 }
 
@@ -167,11 +173,12 @@ header .liquid-glass {
     border-color 0.3s ease;
 }
 
-/* 封面区深色导航栏下的文字/图标统一变亮（保留 Logo 渐变） */
+/* 封面区导航栏文字统一使用浅色，加轻微阴影保证在复杂背景上可读 */
 header.hero-mode a,
 header.hero-mode button,
 header.hero-mode svg {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
 }
 header.hero-mode a:hover,
 header.hero-mode button:hover {
