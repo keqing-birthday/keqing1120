@@ -6,6 +6,14 @@ import CoreContributors from '../components/CoreContributors';
 import RecruitPanel from '../components/RecruitPanel';
 import ContactPanel from '../components/ContactPanel';
 import Footer from '../components/Footer';
+import { homeSections } from '../config/homeSections';
+
+const sectionComponents = {
+  hero: HeroSection,
+  coreContributors: CoreContributors,
+  recruit: RecruitPanel,
+  contact: ContactPanel,
+};
 
 export default function HomePage() {
   const location = useLocation();
@@ -23,18 +31,28 @@ export default function HomePage() {
     }
   }, [location]);
 
+  const enabledSections = homeSections.filter((section) => section.status === 'enable');
+  const heroSection = enabledSections.find((section) => section.id === 'hero');
+  const contentSections = enabledSections.filter((section) => section.id !== 'hero');
+
+  const renderSection = (section) => {
+    const Component = sectionComponents[section.id];
+    if (!Component) return null;
+    return <Component key={section.id} {...section} />;
+  };
+
   return (
     <div className="animate-fade-in-up">
       <main>
-        <HeroSection />
-        <div className="relative">
-          <ContentParticles />
-          <div className="relative z-10">
-            <CoreContributors />
-            <RecruitPanel />
-            <ContactPanel />
+        {heroSection && renderSection(heroSection)}
+        {contentSections.length > 0 && (
+          <div className="relative">
+            <ContentParticles />
+            <div className="relative z-10">
+              {contentSections.map(renderSection)}
+            </div>
           </div>
-        </div>
+        )}
       </main>
       <Footer />
     </div>

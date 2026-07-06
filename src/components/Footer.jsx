@@ -1,42 +1,57 @@
 import FooterParticles from './FooterParticles';
+import { footerConfig } from '../config/footer';
 
 export default function Footer() {
+  const isEnabled = (section) => section?.status === 'enable';
+
   return (
     <footer className="relative py-12 bg-[var(--page-bg)] border-t border-[var(--border-color)] overflow-hidden transition-colors duration-300">
       <FooterParticles />
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-6 text-center">
-        <p className="mb-2">
-          <span className="font-title text-2xl gradient-text">刻晴生日会</span>
-        </p>
-        <p className="text-[var(--text-secondary)] mb-2">
-          玉衡一心定天衡· 生贺组作品
-        </p>
-        <p className="text-sm text-[var(--text-secondary)] mb-4">
-          本站为原神角色「刻晴」同人生日庆祝活动页面，非官方内容
-        </p>
-        <p className="text-sm text-[var(--text-secondary)] mb-6">
-          由刻晴生贺组「玉衡一心定天衡」制作 · QQ群：231786295
-        </p>
+        {isEnabled(footerConfig.brand) && (
+          <p className="mb-2">
+            <span className="font-title text-2xl gradient-text">{footerConfig.brand.title}</span>
+          </p>
+        )}
+
+        {isEnabled(footerConfig.tagline) && (
+          <p className="text-[var(--text-secondary)] mb-2">{footerConfig.tagline.text}</p>
+        )}
+
+        {isEnabled(footerConfig.description) && (
+          <p className="text-sm text-[var(--text-secondary)] mb-4">{footerConfig.description.text}</p>
+        )}
+
+        {isEnabled(footerConfig.credits) && (
+          <p className="text-sm text-[var(--text-secondary)] mb-6">{footerConfig.credits.text}</p>
+        )}
+
         <div className="text-xs text-[var(--text-secondary)] space-y-1">
-          <p>© 2026 Keqing Birthday Fan Project. All rights reserved.</p>
-          <p>版本号 v2.0.2</p>
-          <p>
-            <a
-              href="https://icp.gov.moe/?keyword=20261127"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[var(--accent-purple)] transition-colors"
-            >
-              萌ICP备20261127号
-            </a>
-          </p>
-          <p>
-            本网站为同人作品，所涉及的官方游戏角色、图像、音乐等素材版权归米哈游所有。
-          </p>
-          <p>
-            Genshin Impact and Keqing are trademarks of miHoYo/HoYoverse.
-            This is a fan-made project and is not affiliated with miHoYo.
-          </p>
+          {isEnabled(footerConfig.copyright) && (
+            <p>{footerConfig.copyright.text}</p>
+          )}
+
+          {isEnabled(footerConfig.version) && (
+            <p>{footerConfig.version.text}</p>
+          )}
+
+          {isEnabled(footerConfig.icp) && (
+            <p>
+              <a
+                href={footerConfig.icp.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--accent-purple)] transition-colors"
+              >
+                {footerConfig.icp.text}
+              </a>
+            </p>
+          )}
+
+          {isEnabled(footerConfig.disclaimers) &&
+            footerConfig.disclaimers.items.map((text, i) => (
+              <p key={i}>{text}</p>
+            ))}
         </div>
       </div>
     </footer>

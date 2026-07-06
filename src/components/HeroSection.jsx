@@ -7,20 +7,15 @@ import 'swiper/css/navigation';
 import Glass from './Glass';
 import LiquidGlass from './LiquidGlass';
 
-const slides = [
-  { src: '/images/birthday-2021.jpg', alt: '2021年刻晴生日' },
-  { src: '/images/birthday-2022.jpg', alt: '2022年刻晴生日' },
-  { src: '/images/birthday-2023.jpg', alt: '2023年刻晴生日' },
-  { src: '/images/birthday-2024.jpg', alt: '2024年刻晴生日' },
-];
-
-export default function HeroSection() {
-  const scrollToRecruit = () => {
-    document.getElementById('recruit')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const scrollToContact = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+export default function HeroSection({
+  titleImage,
+  description,
+  primaryButton,
+  secondaryButton,
+  slides,
+}) {
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -34,8 +29,8 @@ export default function HeroSection() {
           <div className="text-center lg:text-left min-w-0">
             <h1 className="mb-4 lg:mt-[5px]">
               <img
-                src="/images/hero-title.png"
-                alt="刻晴生日会 需要你的加入"
+                src={titleImage.src}
+                alt={titleImage.alt}
                 className="w-full max-w-lg mx-auto lg:mx-0 h-auto transition-all duration-300 ease-out"
                 width={1600}
                 height={759}
@@ -44,25 +39,24 @@ export default function HeroSection() {
                 fetchpriority="high"
               />
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-300 mb-8 max-w-lg mx-auto lg:mx-0 break-words transition-all duration-300 ease-out">
-              玉衡星刻晴的生日即将到来，我们正在筹备一场盛大的庆典。
-              无论你是才华横溢的创作者，还是热情似火的粉丝，都欢迎加入我们！
+            <p className="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] mb-8 max-w-lg mx-auto lg:mx-0 break-words transition-all duration-300 ease-out">
+              {description}
             </p>
             <div className="flex flex-col [@media(min-width:375px)]:flex-row flex-wrap gap-3 [@media(min-width:375px)]:gap-4 justify-center lg:justify-start transition-all duration-300 ease-out">
               <Glass className="inline-block w-full [@media(min-width:375px)]:w-auto" cornerRadius={999}>
                 <button
-                  onClick={scrollToRecruit}
+                  onClick={() => scrollTo(primaryButton.targetId)}
                   className="w-full [@media(min-width:375px)]:w-auto px-8 py-3 bg-keqing-purple hover:bg-purple-600 rounded-full font-bold text-white btn-glow"
                 >
-                  立即加入
+                  {primaryButton.text}
                 </button>
               </Glass>
               <Glass className="inline-block w-full [@media(min-width:375px)]:w-auto" cornerRadius={999}>
                 <button
-                  onClick={scrollToContact}
+                  onClick={() => scrollTo(secondaryButton.targetId)}
                   className="w-full [@media(min-width:375px)]:w-auto px-8 py-3 hover:bg-purple-900/30 rounded-full font-bold text-purple-300 hover:text-white btn-glow"
                 >
-                  了解更多
+                  {secondaryButton.text}
                 </button>
               </Glass>
             </div>
