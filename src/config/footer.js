@@ -31,7 +31,7 @@ export const footerConfig = {
   },
   version: {
     status: 'enable',
-    text: '版本号 v2.0.2',
+    text: '版本号 v2.1.0',
   },
   icp: {
     status: 'enable',
