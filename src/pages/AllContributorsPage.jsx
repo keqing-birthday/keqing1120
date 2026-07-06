@@ -3,6 +3,10 @@ import { User, ArrowLeft } from 'lucide-react';
 import LiquidGlass from '../components/LiquidGlass';
 import OptimizedImage from '../components/OptimizedImage';
 import { allContributors } from '../data/allContributors';
+import { themeConfig } from '../config/theme';
+
+const pageEnterEnabled =
+  themeConfig.effects.animations.pageEnter.status === 'enable';
 
 export default function AllContributorsPage() {
   const hasLink = (url) => url && url.trim() !== '' && url.trim() !== '#';
@@ -12,7 +16,7 @@ export default function AllContributorsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[var(--page-bg)] text-[var(--text-primary)] transition-colors duration-300 animate-fade-in-up">
+    <div className={`min-h-screen bg-[var(--page-bg)] text-[var(--text-primary)] transition-colors duration-300 ${pageEnterEnabled ? 'animate-fade-in-up' : ''}`}>
       <main className="pt-28 pb-20 md:pt-36 md:pb-32">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="mb-10 md:mb-14">

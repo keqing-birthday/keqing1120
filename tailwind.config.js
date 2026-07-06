@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import { themeConfig } from './src/config/theme.js';
+
 export default {
   darkMode: 'class',
   content: [
@@ -8,17 +10,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        keqing: {
-          purple: '#8a2be2',
-          pink: '#da70d6',
-          gold: '#ffd700',
-          dark: '#0a0a1a',
-          'dark-light': '#1a0a2e',
-        }
+        keqing: themeConfig.brand,
       },
       fontFamily: {
-        title: ['"LXGW Neo ZhiSong"', '"Noto Serif SC"', 'serif'],
-        body: ['"LXGW WenKai Lite"', '"Noto Serif SC"', 'serif'],
+        title: themeConfig.fonts.title,
+        body: themeConfig.fonts.body,
       },
       animation: {
         'spin-slow': 'spin 20s linear infinite',

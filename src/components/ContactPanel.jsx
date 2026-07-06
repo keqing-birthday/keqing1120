@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import LiquidGlass from './LiquidGlass';
 import Toast from './Toast';
 
-export default function ContactPanel() {
+export default function ContactPanel({ title, description, qqGroup, groupName }) {
   const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState({
     show: false,
@@ -11,7 +11,6 @@ export default function ContactPanel() {
     type: 'success',
     key: 0,
   });
-  const qqGroup = '231786295';
 
   const showToast = (message, type = 'success') => {
     setToast((prev) => ({
@@ -62,15 +61,15 @@ export default function ContactPanel() {
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <LiquidGlass className="p-6 md:p-10 max-w-2xl mx-auto glass-card-hover" cornerRadius={24}>
           <h2 className="text-3xl md:text-5xl font-title text-center mb-4 gradient-text">
-            联系方式
+            {title}
           </h2>
           <p className="text-center text-[var(--text-secondary)] mb-10">
-            加入我们的社区，获取最新资讯和活动信息！
+            {description}
           </p>
 
           <div className="text-center">
             <div className="text-sm text-[var(--text-secondary)] mb-2">QQ交流群</div>
-            <div className="text-2xl font-bold mb-2">玉衡一心定天衡</div>
+            <div className="text-2xl font-bold mb-2">{groupName}</div>
 
             <div className="flex items-center justify-center gap-3">
               <div className="text-3xl font-mono font-bold gradient-text">

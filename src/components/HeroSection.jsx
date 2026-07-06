@@ -6,21 +6,19 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import Glass from './Glass';
 import LiquidGlass from './LiquidGlass';
+import { themeConfig } from '../config/theme';
 
-const slides = [
-  { src: '/images/birthday-2021.jpg', alt: '2021年刻晴生日' },
-  { src: '/images/birthday-2022.jpg', alt: '2022年刻晴生日' },
-  { src: '/images/birthday-2023.jpg', alt: '2023年刻晴生日' },
-  { src: '/images/birthday-2024.jpg', alt: '2024年刻晴生日' },
-];
+const swiperConfig = themeConfig.effects.swiper;
 
-export default function HeroSection() {
-  const scrollToRecruit = () => {
-    document.getElementById('recruit')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const scrollToContact = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+export default function HeroSection({
+  titleImage,
+  description,
+  primaryButton,
+  secondaryButton,
+  slides,
+}) {
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -34,8 +32,8 @@ export default function HeroSection() {
           <div className="text-center lg:text-left min-w-0">
             <h1 className="mb-4 lg:mt-[5px]">
               <img
-                src="/images/hero-title.png"
-                alt="刻晴生日会 需要你的加入"
+                src={titleImage.src}
+                alt={titleImage.alt}
                 className="w-full max-w-lg mx-auto lg:mx-0 h-auto transition-all duration-300 ease-out"
                 width={1600}
                 height={759}
@@ -44,25 +42,45 @@ export default function HeroSection() {
                 fetchpriority="high"
               />
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-300 mb-8 max-w-lg mx-auto lg:mx-0 break-words transition-all duration-300 ease-out">
-              玉衡星刻晴的生日即将到来，我们正在筹备一场盛大的庆典。
-              无论你是才华横溢的创作者，还是热情似火的粉丝，都欢迎加入我们！
+            <p className="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] mb-8 max-w-lg mx-auto lg:mx-0 break-words transition-all duration-300 ease-out">
+              {description}
             </p>
             <div className="flex flex-col [@media(min-width:375px)]:flex-row flex-wrap gap-3 [@media(min-width:375px)]:gap-4 justify-center lg:justify-start transition-all duration-300 ease-out">
               <Glass className="inline-block w-full [@media(min-width:375px)]:w-auto" cornerRadius={999}>
                 <button
-                  onClick={scrollToRecruit}
-                  className="w-full [@media(min-width:375px)]:w-auto px-8 py-3 bg-keqing-purple hover:bg-purple-600 rounded-full font-bold text-white btn-glow"
+                  onClick={() => scrollTo(primaryButton.targetId)}
+                  className="w-full [@media(min-width:375px)]:w-auto px-8 py-3 rounded-full font-bold btn-glow transition-colors"
+                  style={{
+                    backgroundColor: 'var(--home-hero-primary-button-bg)',
+                    color: 'var(--home-hero-primary-button-text)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--home-hero-primary-button-hover-bg)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--home-hero-primary-button-bg)';
+                  }}
                 >
-                  立即加入
+                  {primaryButton.text}
                 </button>
               </Glass>
               <Glass className="inline-block w-full [@media(min-width:375px)]:w-auto" cornerRadius={999}>
                 <button
-                  onClick={scrollToContact}
-                  className="w-full [@media(min-width:375px)]:w-auto px-8 py-3 hover:bg-purple-900/30 rounded-full font-bold text-purple-300 hover:text-white btn-glow"
+                  onClick={() => scrollTo(secondaryButton.targetId)}
+                  className="w-full [@media(min-width:375px)]:w-auto px-8 py-3 rounded-full font-bold btn-glow transition-colors"
+                  style={{
+                    color: 'var(--home-hero-secondary-button-text)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--home-hero-secondary-button-hover-text)';
+                    e.currentTarget.style.backgroundColor = 'var(--home-hero-secondary-button-hover-bg)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--home-hero-secondary-button-text)';
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }}
                 >
-                  了解更多
+                  {secondaryButton.text}
                 </button>
               </Glass>
             </div>
@@ -74,7 +92,7 @@ export default function HeroSection() {
               <div className="w-full h-full rounded-[20px] overflow-hidden">
                 <Swiper
                   modules={[Autoplay, Navigation]}
-                  autoplay={{ delay: 5000, disableOnInteraction: false }}
+                  autoplay={{ delay: swiperConfig.autoplayDelay, disableOnInteraction: false }}
                   navigation
                   loop
                   className="w-full h-full max-w-full max-h-full"
