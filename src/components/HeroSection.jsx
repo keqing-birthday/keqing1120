@@ -6,6 +6,9 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import Glass from './Glass';
 import LiquidGlass from './LiquidGlass';
+import { themeConfig } from '../config/theme';
+
+const swiperConfig = themeConfig.effects.swiper;
 
 export default function HeroSection({
   titleImage,
@@ -46,7 +49,17 @@ export default function HeroSection({
               <Glass className="inline-block w-full [@media(min-width:375px)]:w-auto" cornerRadius={999}>
                 <button
                   onClick={() => scrollTo(primaryButton.targetId)}
-                  className="w-full [@media(min-width:375px)]:w-auto px-8 py-3 bg-keqing-purple hover:bg-purple-600 rounded-full font-bold text-white btn-glow"
+                  className="w-full [@media(min-width:375px)]:w-auto px-8 py-3 rounded-full font-bold btn-glow transition-colors"
+                  style={{
+                    backgroundColor: 'var(--home-hero-primary-button-bg)',
+                    color: 'var(--home-hero-primary-button-text)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--home-hero-primary-button-hover-bg)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--home-hero-primary-button-bg)';
+                  }}
                 >
                   {primaryButton.text}
                 </button>
@@ -54,7 +67,18 @@ export default function HeroSection({
               <Glass className="inline-block w-full [@media(min-width:375px)]:w-auto" cornerRadius={999}>
                 <button
                   onClick={() => scrollTo(secondaryButton.targetId)}
-                  className="w-full [@media(min-width:375px)]:w-auto px-8 py-3 hover:bg-purple-900/30 rounded-full font-bold text-purple-300 hover:text-white btn-glow"
+                  className="w-full [@media(min-width:375px)]:w-auto px-8 py-3 rounded-full font-bold btn-glow transition-colors"
+                  style={{
+                    color: 'var(--home-hero-secondary-button-text)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--home-hero-secondary-button-hover-text)';
+                    e.currentTarget.style.backgroundColor = 'var(--home-hero-secondary-button-hover-bg)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--home-hero-secondary-button-text)';
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }}
                 >
                   {secondaryButton.text}
                 </button>
@@ -68,7 +92,7 @@ export default function HeroSection({
               <div className="w-full h-full rounded-[20px] overflow-hidden">
                 <Swiper
                   modules={[Autoplay, Navigation]}
-                  autoplay={{ delay: 5000, disableOnInteraction: false }}
+                  autoplay={{ delay: swiperConfig.autoplayDelay, disableOnInteraction: false }}
                   navigation
                   loop
                   className="w-full h-full max-w-full max-h-full"

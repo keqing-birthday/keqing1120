@@ -7,6 +7,10 @@ import RecruitPanel from '../components/RecruitPanel';
 import ContactPanel from '../components/ContactPanel';
 import Footer from '../components/Footer';
 import { homeSections } from '../config/homeSections';
+import { themeConfig } from '../config/theme';
+
+const pageEnterEnabled =
+  themeConfig.effects.animations.pageEnter.status === 'enable';
 
 const sectionComponents = {
   hero: HeroSection,
@@ -42,7 +46,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="animate-fade-in-up">
+    <div className={pageEnterEnabled ? 'animate-fade-in-up' : ''}>
       <main>
         {heroSection && renderSection(heroSection)}
         {contentSections.length > 0 && (

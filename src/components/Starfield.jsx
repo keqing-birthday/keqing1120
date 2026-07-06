@@ -1,52 +1,47 @@
 import { useEffect, useMemo, useRef } from 'react';
+import { themeConfig } from '../config/theme';
 
-function createStars(count) {
-  return Array.from({ length: count }, (_, i) => ({
-    id: i,
-    top: `${Math.random() * 100}%`,
-    left: `${Math.random() * 100}%`,
-    size: Math.random() * 2.2 + 0.8,
-    delay: Math.random() * 4,
-    twinkleDuration: Math.random() * 2 + 1.5,
-    driftDuration: Math.random() * 25 + 20,
-    driftDelay: Math.random() * 15,
-  }));
-}
-
-const nebulas = [
-  {
-    top: '5%',
-    left: '15%',
-    size: '55vw',
-    color: 'rgba(138, 43, 226, 0.22)',
-    duration: 12,
-  },
-  {
-    top: '55%',
-    left: '65%',
-    size: '45vw',
-    color: 'rgba(218, 112, 214, 0.20)',
-    duration: 15,
-  },
-  {
-    top: '35%',
-    left: '45%',
-    size: '60vw',
-    color: 'rgba(75, 0, 130, 0.18)',
-    duration: 18,
-  },
-];
+const starfieldConfig = themeConfig.effects.starfield;
+const heroColors = themeConfig.home.hero;
 
 const isMobile =
   typeof window !== 'undefined' &&
   window.matchMedia('(pointer: coarse)').matches;
-const STAR_COUNT = isMobile ? 28 : 45;
+const STAR_COUNT = isMobile
+  ? starfieldConfig.starCount.mobile
+  : starfieldConfig.starCount.desktop;
+
+function createStars(count) {
+  const { min, max } = starfieldConfig.starSize;
+  const twinkle = starfieldConfig.twinkle;
+  const drift = starfieldConfig.drift;
+  return Array.from({ length: count }, (_, i) => ({
+    id: i,
+    top: `${Math.random() * 100}%`,
+    left: `${Math.random() * 100}%`,
+    size: Math.random() * (max - min) + min,
+    delay: Math.random() * twinkle.delayMax,
+    twinkleDuration: Math.random() * (twinkle.durationMax - twinkle.durationMin) + twinkle.durationMin,
+    driftDuration: Math.random() * (drift.durationMax - drift.durationMin) + drift.durationMin,
+    driftDelay: Math.random() * (drift.durationMin * 0.75),
+  }));
+}
+
+const nebulas = starfieldConfig.nebula.items.map((item, index) => ({
+  top: item.top,
+  left: item.left,
+  size: item.size,
+  color: heroColors[`nebula${index + 1}`],
+  duration: item.duration,
+}));
 
 export default function Starfield() {
   const containerRef = useRef(null);
 
   // 当星空滚出视口时暂停动画，避免后台持续占用 GPU
   useEffect(() => {
+    if (starfieldConfig.status === 'disable') return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -67,11 +62,13 @@ export default function Starfield() {
 
   const stars = useMemo(() => createStars(STAR_COUNT), []);
 
+  if (starfieldConfig.status === 'disable') return null;
+
   return (
     <div
       ref={containerRef}
       className="starfield absolute inset-0 overflow-hidden pointer-events-none z-0"
-      style={{ '--starfield-paused': 'running' }}
+      style={{ '--starfield-paused': 'running', background: 'var(--home-hero-background)' }}
     >
       {nebulas.map((n, i) => (
         <div
@@ -96,6 +93,8 @@ export default function Starfield() {
             left: s.left,
             width: `${s.size}px`,
             height: `${s.size}px`,
+            background: heroColors.starColor,
+            boxShadow: `0 0 5px ${heroColors.starGlow}`,
             animationDelay: `${s.delay}s, ${s.driftDelay}s`,
             animationDuration: `${s.twinkleDuration}s, ${s.driftDuration}s`,
           }}

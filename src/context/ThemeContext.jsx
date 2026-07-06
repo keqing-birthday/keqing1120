@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ThemeContext } from './theme-context';
+import { themeConfig } from '../config/theme';
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() =>
@@ -17,6 +18,24 @@ export function ThemeProvider({ children }) {
     } else {
       root.classList.add(theme);
     }
+
+    // 应用主题预设（liquid-glass / frosted-glass / opaque / minimal）
+    root.dataset.themePreset = themeConfig.preset;
+
+    // 根据 effects 配置设置 CSS 微交互开关
+    const animations = themeConfig.effects.animations;
+    const toggleAttr = (name, disabled) => {
+      if (disabled) {
+        root.setAttribute(name, '');
+      } else {
+        root.removeAttribute(name);
+      }
+    };
+    toggleAttr('data-disable-button-glow', animations.buttonGlow.status === 'disable');
+    toggleAttr('data-disable-card-hover', animations.cardHover.status === 'disable');
+    toggleAttr('data-disable-icon-hover', animations.iconHover.status === 'disable');
+    toggleAttr('data-disable-link-glow', animations.linkGlow.status === 'disable');
+    toggleAttr('data-disable-music-visualizer', animations.musicVisualizer.status === 'disable');
 
     localStorage.setItem('keqing-theme', theme);
   }, [theme]);

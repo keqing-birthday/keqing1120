@@ -6,38 +6,8 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --page-bg: #efe6f3;
-  --card-bg: rgba(255, 255, 255, 0.55);
-  --card-bg-hover: rgba(255, 255, 255, 0.72);
-  --text-primary: #1d1d1f;
-  --text-secondary: #555560;
-  --accent-purple: #8a2be2;
-  --accent-pink: #da70d6;
-  --accent-gold: #d4a800;
-  --border-color: rgba(255, 255, 255, 0.6);
-  --border-color-outer: rgba(255, 255, 255, 0.85);
-  --shadow-color: rgba(0, 0, 0, 0.1);
-  --glass-blur: 12px;
-}
-
-.dark {
-  --page-bg: #08081a;
-  --card-bg: rgba(55, 55, 95, 0.65);
-  --card-bg-hover: rgba(70, 70, 120, 0.75);
-  --text-primary: #f0f0f5;
-  --text-secondary: #c8c8d4;
-  --accent-purple: #c58bff;
-  --accent-pink: #f0a0f0;
-  --accent-gold: #ffe847;
-  --border-color: rgba(255, 255, 255, 0.28);
-  --border-color-outer: rgba(255, 255, 255, 0.4);
-  --shadow-color: rgba(0, 0, 0, 0.45);
-  --glass-blur: 18px;
-}
-
 body {
-  font-family: 'LXGW WenKai Lite', 'Noto Serif SC', serif;
+  font-family: var(--font-body);
   font-weight: 400;
   background-color: var(--page-bg);
   color: var(--text-primary);
@@ -61,14 +31,14 @@ body {
 
 /* 渐变文字 */
 .gradient-text {
-  background: linear-gradient(135deg, #8a2be2, #da70d6);
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .gold-gradient {
-  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  background: linear-gradient(135deg, var(--accent-gold), #ffed4e);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -187,18 +157,18 @@ header.hero-mode button:hover {
 
 /* 音乐可视化动画 */
 @keyframes music-bar {
-  0%, 100% { height: 20%; }
-  50% { height: 100%; }
+  0%, 100% { height: var(--effects-animations-music-visualizer-bar-min-height, 20%); }
+  50% { height: var(--effects-animations-music-visualizer-bar-max-height, 100%); }
 }
 .music-bar {
-  animation: music-bar 0.8s ease-in-out infinite;
+  animation: music-bar var(--effects-animations-music-visualizer-duration, 0.8s) ease-in-out infinite;
 }
 
 /* 页面进入动画 */
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(var(--effects-animations-page-enter-distance, 24px));
   }
   to {
     opacity: 1;
@@ -206,18 +176,19 @@ header.hero-mode button:hover {
   }
 }
 .animate-fade-in-up {
-  animation: fade-in-up 0.5s ease-out forwards;
+  animation: fade-in-up var(--effects-animations-page-enter-duration, 0.5s)
+    var(--effects-animations-page-enter-easing, ease-out) forwards;
 }
 
 /* Swiper 导航箭头颜色 */
 .swiper-button-prev,
 .swiper-button-next {
-  --swiper-navigation-color: #8a2be2;
+  --swiper-navigation-color: var(--accent-purple);
 }
 
 .swiper-button-prev:hover,
 .swiper-button-next:hover {
-  --swiper-navigation-color: #da70d6;
+  --swiper-navigation-color: var(--accent-pink);
 }
 
 .swiper-button-prev::after,
@@ -227,19 +198,19 @@ header.hero-mode button:hover {
 }
 
 .swiper-button-disabled {
-  --swiper-navigation-color: rgba(138, 43, 226, 0.35);
+  --swiper-navigation-color: color-mix(in srgb, var(--accent-purple) 35%, transparent);
 }
 
 /* 标签/徽章 */
 .skill-tag {
-  background-color: rgba(138, 43, 226, 0.1);
+  background-color: color-mix(in srgb, var(--accent-purple) 10%, transparent);
   color: var(--text-primary);
   font-weight: 500;
 }
 .dark .skill-tag {
-  background-color: rgba(184, 122, 247, 0.25);
+  background-color: color-mix(in srgb, var(--accent-purple) 25%, transparent);
   color: #ffffff;
-  border: 1px solid rgba(184, 122, 247, 0.5);
+  border: 1px solid color-mix(in srgb, var(--accent-purple) 50%, transparent);
   font-weight: 600;
 }
 
@@ -258,21 +229,21 @@ header.hero-mode button:hover {
   position: absolute;
   inset: -2px;
   border-radius: inherit;
-  background: linear-gradient(135deg, rgba(138, 43, 226, 0.45), rgba(218, 112, 214, 0.35));
-  filter: blur(12px);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-purple) 45%, transparent), color-mix(in srgb, var(--accent-pink) 35%, transparent));
+  filter: blur(var(--effects-animations-button-glow-shadow-blur, 12px));
   opacity: 0;
   z-index: -1;
   transition: opacity 0.25s ease;
 }
 .btn-glow:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 28px -6px rgba(138, 43, 226, 0.45);
+  transform: translateY(var(--effects-animations-button-glow-lift, -3px));
+  box-shadow: 0 10px var(--effects-animations-button-glow-shadow-spread, 28px) -6px color-mix(in srgb, var(--accent-purple) 45%, transparent);
 }
 .btn-glow:hover::after {
   opacity: 1;
 }
 .btn-glow:active {
-  transform: translateY(-1px);
+  transform: translateY(var(--effects-animations-button-glow-active-lift, -1px));
 }
 
 /* 链接：紫色光从左滑入 */
@@ -290,7 +261,7 @@ header.hero-mode button:hover {
   top: 0;
   bottom: 0;
   width: 0;
-  background: linear-gradient(90deg, rgba(138, 43, 226, 0.18), rgba(218, 112, 214, 0.08));
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent-purple) 18%, transparent), color-mix(in srgb, var(--accent-pink) 8%, transparent));
   border-radius: inherit;
   transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: -1;
@@ -299,10 +270,10 @@ header.hero-mode button:hover {
   width: 100%;
 }
 .link-glow:hover {
-  color: #8a2be2;
+  color: var(--accent-purple);
 }
 .dark .link-glow:hover {
-  color: #c58bff;
+  color: var(--accent-purple);
 }
 
 /* 毛玻璃卡片：增强悬停上浮与光晕 */
@@ -311,7 +282,7 @@ header.hero-mode button:hover {
     transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .glass-card-hover:hover {
-  transform: translateY(-6px);
+  transform: translateY(var(--effects-animations-card-hover-lift, -6px));
   box-shadow:
     0 16px 40px -8px var(--shadow-color),
     0 0 0 1px rgba(255, 255, 255, 0.12) inset,
@@ -324,7 +295,8 @@ header.hero-mode button:hover {
 }
 .group:hover .icon-hover,
 .icon-hover:hover {
-  transform: scale(1.12) rotate(-4deg);
+  transform: scale(var(--effects-animations-icon-hover-scale, 1.12))
+    rotate(var(--effects-animations-icon-hover-rotate, -4deg));
 }
 
 /* ============================================================
@@ -337,8 +309,8 @@ header.hero-mode button:hover {
 }
 
 .starfield-nebula {
-  filter: blur(45px);
-  opacity: 0.7;
+  filter: blur(var(--effects-starfield-nebula-blur, 45px));
+  opacity: var(--effects-starfield-nebula-opacity, 0.7);
   animation: nebula-drift linear infinite;
   animation-play-state: var(--starfield-paused, running);
   will-change: transform;
@@ -391,7 +363,11 @@ header.hero-mode button:hover {
     transform: translate(0, 0) scale(1);
   }
   100% {
-    transform: translate(-60px, -120px) scale(1);
+    transform: translate(
+        calc(var(--effects-starfield-drift-distance-x, -60) * 1px),
+        calc(var(--effects-starfield-drift-distance-y, -120) * 1px)
+      )
+      scale(1);
   }
 }
 
@@ -405,4 +381,149 @@ header.hero-mode button:hover {
   backface-visibility: hidden;
   will-change: transform;
   contain: layout paint;
+}
+
+/* ============================================================
+   主题预设覆盖
+   在 src/config/theme.js 中修改 preset 字段即可切换。
+   可选：liquid-glass（默认）/ frosted-glass / opaque / minimal
+   ============================================================ */
+
+/* 液态玻璃：默认样式已在上方 .liquid-glass / .glass-card 中定义，无需覆盖 */
+
+/* 简约毛玻璃：只保留模糊，去掉复杂高光、反射、边缘 */
+[data-theme-preset="frosted-glass"] .liquid-glass,
+[data-theme-preset="frosted-glass"] .glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme-preset="frosted-glass"] .dark .liquid-glass,
+[data-theme-preset="frosted-glass"] .dark .glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme-preset="frosted-glass"] .liquid-glass::before,
+[data-theme-preset="frosted-glass"] .liquid-glass::after,
+[data-theme-preset="frosted-glass"] .liquid-glass-sheen,
+[data-theme-preset="frosted-glass"] .liquid-glass-edge,
+[data-theme-preset="frosted-glass"] .liquid-glass-reflect {
+  display: none;
+}
+
+[data-theme-preset="frosted-glass"] .liquid-glass-blur {
+  background: transparent;
+}
+
+/* 不透明卡片：去掉模糊，使用实色背景 */
+[data-theme-preset="opaque"] .liquid-glass,
+[data-theme-preset="opaque"] .glass-card {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 16px -4px var(--shadow-color);
+}
+
+[data-theme-preset="opaque"] .liquid-glass::before,
+[data-theme-preset="opaque"] .liquid-glass::after,
+[data-theme-preset="opaque"] .liquid-glass-sheen,
+[data-theme-preset="opaque"] .liquid-glass-edge,
+[data-theme-preset="opaque"] .liquid-glass-reflect {
+  display: none;
+}
+
+[data-theme-preset="opaque"] .liquid-glass-blur {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* 极简扁平：去掉模糊、阴影和装饰层 */
+[data-theme-preset="minimal"] .liquid-glass,
+[data-theme-preset="minimal"] .glass-card {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: none;
+}
+
+[data-theme-preset="minimal"] .liquid-glass::before,
+[data-theme-preset="minimal"] .liquid-glass::after,
+[data-theme-preset="minimal"] .liquid-glass-sheen,
+[data-theme-preset="minimal"] .liquid-glass-edge,
+[data-theme-preset="minimal"] .liquid-glass-reflect {
+  display: none;
+}
+
+[data-theme-preset="minimal"] .liquid-glass-blur {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+[data-theme-preset="minimal"] .glass-card-hover:hover,
+[data-theme-preset="minimal"] .liquid-glass-hover:hover,
+[data-theme-preset="minimal"] .liquid-glass.glass-card-hover:hover {
+  box-shadow: none;
+  filter: none;
+}
+
+/* ============================================================
+   特效开关：在 theme.js 中把对应 status 设为 'disable' 即可关闭
+   ============================================================ */
+
+[data-disable-button-glow] .btn-glow:hover,
+[data-disable-button-glow] .btn-glow:active,
+[data-disable-button-glow] .btn-glow::after {
+  transform: none;
+  box-shadow: none;
+  opacity: 0;
+}
+
+[data-disable-card-hover] .glass-card-hover:hover,
+[data-disable-card-hover] .liquid-glass-hover:hover,
+[data-disable-card-hover] .liquid-glass.glass-card-hover:hover {
+  transform: none;
+  filter: none;
+}
+
+[data-disable-icon-hover] .icon-hover:hover,
+[data-disable-icon-hover] .group:hover .icon-hover {
+  transform: none;
+}
+
+[data-disable-link-glow] .link-glow::before {
+  display: none;
+}
+[data-disable-link-glow] .link-glow:hover {
+  color: inherit;
+}
+
+[data-disable-music-visualizer] .music-bar {
+  animation: none;
+}
+
+/* 预设切换时保持封面区导航栏可读性 */
+[data-theme-preset="frosted-glass"] header.hero-mode .liquid-glass,
+[data-theme-preset="opaque"] header.hero-mode .liquid-glass,
+[data-theme-preset="minimal"] header.hero-mode .liquid-glass {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+[data-theme-preset="frosted-glass"] header.hero-mode .liquid-glass:hover,
+[data-theme-preset="opaque"] header.hero-mode .liquid-glass:hover,
+[data-theme-preset="minimal"] header.hero-mode .liquid-glass:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme-preset="frosted-glass"] header.hero-mode .liquid-glass-blur,
+[data-theme-preset="opaque"] header.hero-mode .liquid-glass-blur,
+[data-theme-preset="minimal"] header.hero-mode .liquid-glass-blur {
+  background: transparent;
 }

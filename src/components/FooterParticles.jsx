@@ -1,5 +1,6 @@
 import { useEffect, useRef, useSyncExternalStore } from 'react';
 import { useTheme } from '../context/useTheme';
+import { themeConfig } from '../config/theme';
 
 function subscribe(callback) {
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -15,11 +16,18 @@ function getServerSnapshot() {
   return false;
 }
 
+const footerConfig = themeConfig.effects.footerParticles;
+
 const isMobile =
   typeof window !== 'undefined' &&
   window.matchMedia('(pointer: coarse)').matches;
-const PARTICLE_COUNT = isMobile ? 16 : 28;
-const MAX_DPR = 2;
+const PARTICLE_COUNT = isMobile
+  ? footerConfig.particleCount.mobile
+  : footerConfig.particleCount.desktop;
+const MAX_DPR = footerConfig.maxDpr;
+
+// 从主题配置读取页脚粒子颜色
+const footerParticleColors = themeConfig.home.footerParticles.colors;
 
 export default function FooterParticles() {
   const canvasRef = useRef(null);
@@ -29,6 +37,7 @@ export default function FooterParticles() {
 
   useEffect(() => {
     if (!isDark) return;
+    if (footerConfig.status === 'disable') return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -53,15 +62,16 @@ export default function FooterParticles() {
 
     const createParticle = () => {
       const rect = canvas.getBoundingClientRect();
+      const cfg = footerConfig;
       return {
         x: Math.random() * rect.width,
         y: rect.height + Math.random() * 20,
-        size: Math.random() * 2 + 0.5,
-        speedY: Math.random() * 0.8 + 0.2,
-        speedX: (Math.random() - 0.5) * 0.4,
-        opacity: Math.random() * 0.5 + 0.2,
-        color: Math.random() > 0.7 ? '#ffd700' : '#da70d6',
-        life: Math.random() * 100 + 100,
+        size: Math.random() * (cfg.sizeMax - cfg.sizeMin) + cfg.sizeMin,
+        speedY: Math.random() * (cfg.speedYMax - cfg.speedYMin) + cfg.speedYMin,
+        speedX: (Math.random() - 0.5) * cfg.speedXSpread * 2,
+        opacity: Math.random() * (cfg.opacityMax - cfg.opacityMin) + cfg.opacityMin,
+        color: footerParticleColors[Math.floor(Math.random() * footerParticleColors.length)],
+        life: Math.random() * (cfg.lifeMax - cfg.lifeMin) + cfg.lifeMin,
       };
     };
 
@@ -121,7 +131,7 @@ export default function FooterParticles() {
     };
   }, [isDark]);
 
-  if (!isDark) return null;
+  if (!isDark || footerConfig.status === 'disable') return null;
 
   return (
     <canvas

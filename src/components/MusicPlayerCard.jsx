@@ -2,6 +2,9 @@ import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, ListMusic } from 
 import { useMusic } from '../context/useMusic';
 import LiquidGlass from './LiquidGlass';
 import OptimizedImage from './OptimizedImage';
+import { themeConfig } from '../config/theme';
+
+const musicVisualizerConfig = themeConfig.effects.animations.musicVisualizer;
 
 export default function MusicPlayerCard({ compact = false }) {
   const {
@@ -87,16 +90,13 @@ export default function MusicPlayerCard({ compact = false }) {
             <ListMusic size={48} className="text-keqing-purple/50" />
           </div>
         )}
-        {isPlaying && (
+        {isPlaying && musicVisualizerConfig.status === 'enable' && (
           <div className="absolute bottom-2 right-2 flex gap-0.5 items-end h-6">
             {[1, 2, 3, 4].map((i) => (
               <div
                 key={i}
                 className="w-1 bg-keqing-purple rounded-full music-bar"
-                style={{
-                  animationDelay: `${i * 0.15}s`,
-                  animationDuration: `${0.6 + i * 0.1}s`
-                }}
+                style={{ animationDelay: `${i * 0.15}s` }}
               />
             ))}
           </div>

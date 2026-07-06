@@ -1,5 +1,6 @@
 import { useEffect, useRef, useSyncExternalStore } from 'react';
 import { useTheme } from '../context/useTheme';
+import { themeConfig } from '../config/theme';
 
 function subscribe(callback) {
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -15,16 +16,22 @@ function getServerSnapshot() {
   return false;
 }
 
+const contentConfig = themeConfig.effects.contentParticles;
+const particleColors = themeConfig.home.contentParticles;
+
 const isMobile =
   typeof window !== 'undefined' &&
   window.matchMedia('(pointer: coarse)').matches;
 
-// 仅对移动端降级，桌面端保持原有精度
-const PARTICLE_COUNT = isMobile ? 25 : 45;
-const MIST_COUNT = isMobile ? 3 : 7;
-const ENABLE_TRAIL = !isMobile;
-const ENABLE_LIGHTNING = !isMobile;
-const MAX_DPR_MOBILE = 1.5;
+const PARTICLE_COUNT = isMobile
+  ? contentConfig.particleCount.mobile
+  : contentConfig.particleCount.desktop;
+const MIST_COUNT = isMobile
+  ? contentConfig.mistCount.mobile
+  : contentConfig.mistCount.desktop;
+const ENABLE_TRAIL = contentConfig.enableTrail && !isMobile;
+const ENABLE_LIGHTNING = contentConfig.enableLightning && !isMobile;
+const MAX_DPR_MOBILE = contentConfig.maxDprMobile;
 
 export default function ContentParticles() {
   const canvasRef = useRef(null);
@@ -42,8 +49,11 @@ export default function ContentParticles() {
     let mists = [];
     let isVisible = false;
     let resizeRaf = null;
+    const ln = contentConfig.lightning;
     let lightning = null;
-    let lightningTimer = Math.floor(Math.random() * 240 + 120);
+    let lightningTimer = Math.floor(
+      Math.random() * (ln.initialTimerMax - ln.initialTimerMin) + ln.initialTimerMin
+    );
 
     const resize = () => {
       if (resizeRaf) return;
@@ -61,61 +71,57 @@ export default function ContentParticles() {
 
     const createLightParticle = (initial = false) => {
       const rect = canvas.getBoundingClientRect();
-      const colors = ['#ffc0cb', '#ffb6c1', '#ff9eb5', '#ffd1dc'];
+      const colors = particleColors.light;
+      const petal = contentConfig.petal;
       return {
         x: Math.random() * rect.width,
         y: initial
           ? Math.random() * (rect.height + 80) - 40
           : -Math.random() * 60 - 15,
-        size: Math.random() * 4 + 6,
-        speedY: Math.random() * 0.9 + 0.5,
-        speedX: (Math.random() - 0.5) * 0.7,
+        size: Math.random() * (petal.sizeMax - petal.sizeMin) + petal.sizeMin,
+        speedY: Math.random() * (petal.speedYMax - petal.speedYMin) + petal.speedYMin,
+        speedX: (Math.random() - 0.5) * petal.speedXSpread * 2,
         rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.025,
-        opacity: Math.random() * 0.2 + 0.75,
+        rotationSpeed: (Math.random() - 0.5) * petal.rotationSpeedSpread * 2,
+        opacity: Math.random() * (petal.opacityMax - petal.opacityMin) + petal.opacityMin,
         color: colors[Math.floor(Math.random() * colors.length)],
-        swayFrequency: Math.random() * 0.008 + 0.004,
+        swayFrequency: Math.random() * (petal.swayFrequencyMax - petal.swayFrequencyMin) + petal.swayFrequencyMin,
         phase: Math.random() * Math.PI * 2,
         trail: [],
-        trailLength: ENABLE_TRAIL ? Math.floor(Math.random() * 6 + 10) : 0,
+        trailLength: ENABLE_TRAIL
+          ? Math.floor(Math.random() * (petal.trailLengthMax - petal.trailLengthMin) + petal.trailLengthMin)
+          : 0,
       };
     };
 
     const createDarkParticle = (initial = false) => {
       const rect = canvas.getBoundingClientRect();
+      const colors = particleColors.dark;
+      const dot = contentConfig.darkDot;
       return {
         x: Math.random() * rect.width,
         y: initial
           ? Math.random() * (rect.height + 80) - 40
           : rect.height + Math.random() * 40 + 10,
-        size: Math.random() * 2 + 2.5,
-        speedY: Math.random() * 0.5 + 0.2,
-        speedX: (Math.random() - 0.5) * 0.35,
-        opacity: Math.random() * 0.3 + 0.35,
-        color:
-          Math.random() > 0.6
-            ? '#a855f7'
-            : Math.random() > 0.5
-              ? '#8b5cf6'
-              : '#7c3aed',
+        size: Math.random() * (dot.sizeMax - dot.sizeMin) + dot.sizeMin,
+        speedY: Math.random() * (dot.speedYMax - dot.speedYMin) + dot.speedYMin,
+        speedX: (Math.random() - 0.5) * dot.speedXSpread * 2,
+        opacity: Math.random() * (dot.opacityMax - dot.opacityMin) + dot.opacityMin,
+        color: colors[Math.floor(Math.random() * colors.length)],
       };
     };
 
     const createDarkMist = () => {
       const rect = canvas.getBoundingClientRect();
-      const colors = [
-        'rgba(138, 43, 226, 0.22)',
-        'rgba(124, 58, 237, 0.20)',
-        'rgba(218, 112, 214, 0.18)',
-        'rgba(147, 51, 234, 0.20)',
-      ];
+      const colors = particleColors.mist;
+      const mist = contentConfig.mist;
       return {
         x: Math.random() * rect.width,
         y: Math.random() * rect.height,
-        size: Math.random() * 300 + 260,
+        size: Math.random() * (mist.sizeMax - mist.sizeMin) + mist.sizeMin,
         color: colors[Math.floor(Math.random() * colors.length)],
-        speedX: (Math.random() - 0.5) * 0.28,
-        speedY: (Math.random() - 0.5) * 0.2,
+        speedX: (Math.random() - 0.5) * mist.speedXSpread * 2,
+        speedY: (Math.random() - 0.5) * mist.speedYSpread * 2,
       };
     };
 
@@ -233,12 +239,15 @@ export default function ContentParticles() {
     };
 
     const createLightning = (rect) => {
+      const ln = contentConfig.lightning;
       const startX = Math.random() * rect.width;
       const endX = Math.random() * rect.width;
-      const mainBolt = buildBolt(startX, -40, endX, rect.height + 40, 160, 7);
+      const mainBolt = buildBolt(startX, -40, endX, rect.height + 40, ln.mainDisplacement, ln.mainDepth);
 
       const bolts = [mainBolt];
-      const branchCount = Math.floor(Math.random() * 2) + 2;
+      const branchCount = Math.floor(
+        Math.random() * (ln.branchCountMax - ln.branchCountMin) + ln.branchCountMin
+      );
       for (let i = 0; i < branchCount; i++) {
         const baseBolt = bolts[Math.floor(Math.random() * bolts.length)];
         const baseIdx = Math.floor(Math.random() * (baseBolt.length - 4)) + 2;
@@ -247,13 +256,13 @@ export default function ContentParticles() {
         const branchLen = rect.height * (0.25 + Math.random() * 0.35);
         const bx2 = base.x + Math.cos(angle) * branchLen;
         const by2 = base.y + Math.sin(angle) * branchLen;
-        bolts.push(buildBolt(base.x, base.y, bx2, by2, 90, 5));
+        bolts.push(buildBolt(base.x, base.y, bx2, by2, ln.branchDisplacement, ln.branchDepth));
       }
 
       return {
         bolts,
         age: 0,
-        maxAge: Math.floor(Math.random() * 8 + 10),
+        maxAge: Math.floor(Math.random() * (ln.maxAgeMax - ln.maxAgeMin) + ln.maxAgeMin),
         flash: Math.random() * 0.03 + 0.015,
       };
     };
@@ -334,7 +343,9 @@ export default function ContentParticles() {
           lightningTimer--;
           if (lightningTimer <= 0) {
             lightning = createLightning(rect);
-            lightningTimer = Math.floor(Math.random() * 360 + 240);
+            lightningTimer = Math.floor(
+              Math.random() * (ln.recurrenceTimerMax - ln.recurrenceTimerMin) + ln.recurrenceTimerMin
+            );
           }
         }
 
@@ -405,6 +416,8 @@ export default function ContentParticles() {
       window.removeEventListener('resize', resize);
     };
   }, [isDark]);
+
+  if (contentConfig.status === 'disable') return null;
 
   return (
     <canvas

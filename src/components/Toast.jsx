@@ -1,9 +1,11 @@
 import { Check, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { themeConfig } from '../config/theme';
 
-const DURATION = 2500;
-const EXIT_DURATION = 350;
+const toastConfig = themeConfig.effects.toast;
+const DURATION = toastConfig.duration;
+const EXIT_DURATION = toastConfig.exitDuration;
 
 export default function Toast({ message, type = 'success', visible, trigger, onClose }) {
   const [show, setShow] = useState(false);
