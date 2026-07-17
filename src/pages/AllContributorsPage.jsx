@@ -40,7 +40,6 @@ export default function AllContributorsPage() {
               const linked = hasLink(bilibili);
               const card = (
                 <LiquidGlass
-                  key={i}
                   className={`p-4 md:p-5 text-center transition-all duration-300 group glass-card-hover ${
                     linked ? 'cursor-pointer' : ''
                   }`}

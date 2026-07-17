@@ -52,20 +52,20 @@ function generateThemeCSS() {
   const lightVars = flattenVars(config.colors.light);
   const darkVars = flattenVars(config.colors.dark);
   const homeVars = config.home ? flattenVars(config.home, 'home') : [];
+  const effectsVars = config.effects ? flattenVars(config.effects, 'effects') : [];
 
   return [
     '/* 由 src/config/theme.js 自动生成，请勿直接编辑 */',
     ':root {',
     ...lightVars,
     ...homeVars,
+    ...effectsVars,
     `  --font-title: ${config.fonts.title.join(', ')};`,
     `  --font-body: ${config.fonts.body.join(', ')};`,
-    `  --glass-blur: ${config.effects.glassBlur.light};`,
     '}',
     '',
     '.dark {',
     ...darkVars,
-    `  --glass-blur: ${config.effects.glassBlur.dark};`,
     '}',
   ].join('\n');
 }
