@@ -37,7 +37,6 @@ export default function CoreContributors({
             const linked = hasLink(bilibili);
             const card = (
               <LiquidGlass
-                key={i}
                 className={`p-6 text-center transition-all duration-300 group glass-card-hover ${
                   linked ? 'cursor-pointer' : ''
                 }`}

@@ -63,9 +63,14 @@ html {
     0 4px 20px var(--shadow-color),
     0 0 0 1px rgba(255, 255, 255, 0.06) inset,
     0 1px 0 rgba(255, 255, 255, 0.1) inset;
-  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  backdrop-filter: blur(var(--effects-glass-blur-light)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--effects-glass-blur-light)) saturate(140%);
   transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.dark .glass-card {
+  backdrop-filter: blur(var(--effects-glass-blur-dark)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--effects-glass-blur-dark)) saturate(140%);
 }
 
 .glass-card:hover {
