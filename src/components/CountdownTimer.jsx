@@ -1,4 +1,5 @@
 import { useCountdown } from '../hooks/useCountdown';
+import { siteConfig } from '../config/site.config';
 import LiquidGlass from './LiquidGlass';
 
 function CountdownCard({ value, label }) {
@@ -18,11 +19,12 @@ function CountdownCard({ value, label }) {
 export default function CountdownTimer() {
   const { timeLeft, targetDate } = useCountdown();
   const year = targetDate.getFullYear();
+  const { month, day, eventName } = siteConfig.birthday;
 
   return (
     <div className="text-center">
       <p className="text-sm md:text-base text-[var(--text-secondary)] mb-4">
-        距离 {year} 年11月20日刻晴生日还有
+        距离 {year} 年{month}月{day}日{eventName}还有
       </p>
       <div className="flex gap-3 md:gap-4 justify-center">
         <CountdownCard value={timeLeft.days} label="天" />

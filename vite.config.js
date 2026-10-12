@@ -37,13 +37,11 @@ function flattenVars(obj, prefix = '') {
 }
 
 function loadThemeConfig() {
-  const filePath = path.resolve('src/config/theme.js');
+  const filePath = path.resolve('src/config/theme.config.js');
   const code = readFileSync(filePath, 'utf-8');
-  const match = code.match(/export\s+const\s+themeConfig\s*=\s*(\{[\s\S]*?\n\});\s*$/);
-  if (!match) {
-    throw new Error('无法在 src/config/theme.js 中找到 themeConfig 导出');
-  }
-  const fn = new Function(`return (${match[1]});`);
+  // 去掉 ESM 导出标记后整体求值，支持文件顶部的共享常量（如主题色）
+  const body = code.replace(/export\s+const\s+/g, 'const ');
+  const fn = new Function(`${body}\nreturn themeConfig;`);
   return fn();
 }
 

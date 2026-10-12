@@ -1,12 +1,21 @@
 /**
  * 主题配置
  * =========
- * 修改此文件即可调整全站配色、字体、毛玻璃效果与主题预设。
+ * 改外观用的文件：全站配色、字体、毛玻璃风格、粒子特效、动画参数都在这。
+ *
+ * ★ 快速换主题色：只需改下面三个 accent 常量，全站按钮/链接/渐变/品牌色自动生效。★
  *
  * 浅色/深色模式分别定义在 colors.light 与 colors.dark 下，
  * 字段名会自动转换为 CSS 变量，例如 pageBg -> --page-bg。
  * 修改后保存，Vite 会自动重新生成 CSS 变量并注入到页面中。
  */
+
+// ==================== 主题色（唯一来源） ====================
+// 改这三个常量即可更换全站主色调；深色模式下如需更亮/更暗的变体，
+// 请到 colors.dark 里单独调整。
+const accentPurple = '#8a2be2'; // 主强调色：主按钮、链接、图标、Swiper 箭头
+const accentPink = '#da70d6'; // 辅助强调色：渐变终点、悬停状态
+const accentGold = '#ffd700'; // 高亮色：金色渐变文字、徽章
 
 export const themeConfig = {
   // ==================== 主题预设 ====================
@@ -38,14 +47,14 @@ export const themeConfig = {
       // 次要文字颜色：说明文字、辅助信息等
       textSecondary: '#555560',
 
-      // 强调紫色：主按钮、链接、图标、Swiper 箭头等主强调色
-      accentPurple: '#8a2be2',
+      // 强调紫色：主按钮、链接、图标、Swiper 箭头等主强调色（取顶部 accentPurple）
+      accentPurple,
 
-      // 强调粉色：渐变终点、悬停状态等辅助强调色
-      accentPink: '#da70d6',
+      // 强调粉色：渐变终点、悬停状态等辅助强调色（取顶部 accentPink）
+      accentPink,
 
-      // 强调金色：金色渐变文字、徽章等高亮元素
-      accentGold: '#ffd700',
+      // 强调金色：金色渐变文字、徽章等高亮元素（取顶部 accentGold）
+      accentGold,
 
       // 边框颜色：卡片、组件等内部边框
       borderColor: 'rgba(255, 255, 255, 0.6)',
@@ -74,7 +83,7 @@ export const themeConfig = {
       // 次要文字颜色：深色模式下的说明文字
       textSecondary: '#c8c8d4',
 
-      // 强调紫色：深色模式下的主强调色（通常比浅色模式更亮）
+      // 强调紫色：深色模式下通常比浅色模式更亮，可按需微调
       accentPurple: '#c58bff',
 
       // 强调粉色：深色模式下的辅助强调色
@@ -114,8 +123,8 @@ export const themeConfig = {
       // 星空背景：Hero 区 Starfield 的底层渐变背景
       background: 'radial-gradient(ellipse at bottom, #1b0a2e 0%, #0a0a1a 60%, #050510 100%)',
 
-      // 主按钮背景色：Hero 区“立即加入”按钮
-      primaryButtonBg: '#8a2be2',
+      // 主按钮背景色：Hero 区「立即加入」按钮（取主题色 accentPurple）
+      primaryButtonBg: accentPurple,
 
       // 主按钮悬停背景色：鼠标移到主按钮上时的颜色
       primaryButtonHoverBg: '#9333ea',
@@ -123,8 +132,8 @@ export const themeConfig = {
       // 主按钮文字颜色
       primaryButtonText: '#ffffff',
 
-      // 次按钮文字颜色：Hero 区“了解更多”按钮默认文字
-      secondaryButtonText: '#da70d6',
+      // 次按钮文字颜色：Hero 区「了解更多」按钮默认文字（取主题色 accentPink）
+      secondaryButtonText: accentPink,
 
       // 次按钮悬停文字颜色
       secondaryButtonHoverText: '#ffffff',
@@ -346,8 +355,6 @@ export const themeConfig = {
         shadowSpread: '28px',
         // 发光层模糊半径
         shadowBlur: '12px',
-        // 发光层不透明度
-        glowOpacity: 0.45,
       },
 
       // 玻璃卡片悬停上浮
@@ -407,14 +414,14 @@ export const themeConfig = {
   // 主要用于 Tailwind 的 colors.keqing.*，例如 keqing-purple、keqing-gold。
   // 这部分也会供 JSX 中 arbitrary value（如 bg-keqing-purple）使用。
   brand: {
-    // 品牌紫色
-    purple: '#8a2be2',
+    // 品牌紫色（取主题色 accentPurple）
+    purple: accentPurple,
 
-    // 品牌粉色
-    pink: '#da70d6',
+    // 品牌粉色（取主题色 accentPink）
+    pink: accentPink,
 
-    // 品牌金色
-    gold: '#ffd700',
+    // 品牌金色（取主题色 accentGold）
+    gold: accentGold,
 
     // 品牌深色：最深背景色
     dark: '#0a0a1a',

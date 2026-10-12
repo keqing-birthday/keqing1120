@@ -82,8 +82,11 @@ keqing-birthday-2026/
 │   └── music/
 ├── src/
 │   ├── components/         # React 组件
+│   ├── config/             # ★ 全站配置（改造网站只需改这里）
+│   │   ├── site.config.js      # 站点信息：站名/组名/QQ群/生日日期/备案号
+│   │   ├── content.config.js   # 页面内容：文案/板块/贡献者/歌单/页脚
+│   │   └── theme.config.js     # 视觉主题：配色（改顶部三个常量即可换色）/特效/字体
 │   ├── context/            # React Context（音乐、主题）
-│   ├── data/               # 静态数据
 │   ├── hooks/              # 自定义 Hooks
 │   ├── pages/              # 页面组件
 │   ├── App.jsx             # 路由与页面结构
@@ -95,6 +98,35 @@ keqing-birthday-2026/
 ├── LICENSE
 └── README.md
 ```
+
+## 改造成你的网站
+
+本项目基于 MIT 协议开源，欢迎其它生贺组 fork 改造。按下面清单逐项替换即可：
+
+### 必改：三个配置文件
+
+1. **[src/config/site.config.js](src/config/site.config.js)** — 站名、组名、QQ 群号、生日日期（倒计时自动生效）、备案号
+2. **[src/config/content.config.js](src/config/content.config.js)** — 首页各板块文案与图片、核心/全部贡献者名单、招募信息、音乐歌单、页脚文字
+3. **[src/config/theme.config.js](src/config/theme.config.js)** — 改文件顶部的 `accentPurple / accentPink / accentGold` 三个常量即可更换全站主题色（按钮、链接、渐变、轮播箭头自动生效）；深色模式下的变体在 `colors.dark` 里微调
+
+### 必改：静态资源
+
+- `public/images/` — 首页大标题图 `hero-title.png`、轮播贺图 `birthday-*.jpg`、贡献者头像、音乐封面 `music-cover.jpg`
+- `public/music/` — 歌曲文件（与 content.config.js 歌单里的文件名对应）
+- `public/favicon.png`、`apple-touch-icon.png`、`icons.svg` — 图标
+
+### 必改：index.html
+
+`<head>` 里的站点标题、meta description/keywords、og: 系列标签、canonical 域名（约第 8–20 行）。
+
+### 选改
+
+- `package.json` — `name`、`version`（页脚版本号自动读取这里的 version）
+- `README.md`、`LICENSE` — 署名
+- `wrangler.toml` — Cloudflare Pages 部署配置
+- `src/context/ThemeContext.jsx` 中的 `keqing-theme` localStorage 键名（不改也能正常运行）
+
+改完后运行 `npm run build` 验证构建通过。
 
 ## 如何贡献
 

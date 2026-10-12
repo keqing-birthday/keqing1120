@@ -2,7 +2,7 @@ import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, ListMusic } from 
 import { useMusic } from '../context/useMusic';
 import LiquidGlass from './LiquidGlass';
 import OptimizedImage from './OptimizedImage';
-import { themeConfig } from '../config/theme';
+import { themeConfig } from '../config/theme.config';
 
 const musicVisualizerConfig = themeConfig.effects.animations.musicVisualizer;
 

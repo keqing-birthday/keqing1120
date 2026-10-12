@@ -1,6 +1,6 @@
 import { useEffect, useRef, useSyncExternalStore } from 'react';
 import { useTheme } from '../context/useTheme';
-import { themeConfig } from '../config/theme';
+import { themeConfig } from '../config/theme.config';
 
 function subscribe(callback) {
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');

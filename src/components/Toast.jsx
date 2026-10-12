@@ -1,7 +1,7 @@
 import { Check, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { themeConfig } from '../config/theme';
+import { themeConfig } from '../config/theme.config';
 
 const toastConfig = themeConfig.effects.toast;
 const DURATION = toastConfig.duration;

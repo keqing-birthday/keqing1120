@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
+import { siteConfig } from '../config/site.config';
 
 function getTargetDate() {
   const now = new Date();
   const currentYear = now.getFullYear();
-  const target = new Date(currentYear, 10, 20, 0, 0, 0); // 11月 = 10
+  const { month, day } = siteConfig.birthday;
+  const target = new Date(currentYear, month - 1, day, 0, 0, 0);
 
   if (now > target) {
-    return new Date(currentYear + 1, 10, 20, 0, 0, 0);
+    return new Date(currentYear + 1, month - 1, day, 0, 0, 0);
   }
   return target;
 }

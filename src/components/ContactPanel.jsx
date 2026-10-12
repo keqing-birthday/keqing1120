@@ -2,8 +2,10 @@ import { Copy, Check } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import LiquidGlass from './LiquidGlass';
 import Toast from './Toast';
+import { siteConfig } from '../config/site.config';
 
-export default function ContactPanel({ title, description, qqGroup, groupName }) {
+export default function ContactPanel({ title, description }) {
+  const { qqGroup, groupName } = siteConfig;
   const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState({
     show: false,
