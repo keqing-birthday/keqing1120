@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import { themeConfig } from './src/config/theme.js';
+import { themeConfig } from './src/config/theme.config.js';
 
 export default {
   darkMode: 'class',

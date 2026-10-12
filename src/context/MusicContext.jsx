@@ -1,15 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { MusicContext } from './music-context';
-
-const defaultPlaylist = [
-  {
-    id: 1,
-    title: "刻晴赋",
-    artist: "夏翊然",
-    src: "/music/keqing-fu.mp3",
-    cover: "/images/music-cover.jpg"
-  }
-];
+import { playlist as defaultPlaylist } from '../config/content.config';
 
 export function MusicProvider({ children }) {
   const audioRef = useRef(null);

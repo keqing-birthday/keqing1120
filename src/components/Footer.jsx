@@ -1,5 +1,7 @@
 import FooterParticles from './FooterParticles';
-import { footerConfig } from '../config/footer';
+import { footerConfig } from '../config/content.config';
+import { siteConfig } from '../config/site.config';
+import pkg from '../../package.json';
 
 export default function Footer() {
   const isEnabled = (section) => section?.status === 'enable';
@@ -10,7 +12,7 @@ export default function Footer() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-6 text-center">
         {isEnabled(footerConfig.brand) && (
           <p className="mb-2">
-            <span className="font-title text-2xl gradient-text">{footerConfig.brand.title}</span>
+            <span className="font-title text-2xl gradient-text">{siteConfig.siteName}</span>
           </p>
         )}
 
@@ -23,7 +25,9 @@ export default function Footer() {
         )}
 
         {isEnabled(footerConfig.credits) && (
-          <p className="text-sm text-[var(--text-secondary)] mb-6">{footerConfig.credits.text}</p>
+          <p className="text-sm text-[var(--text-secondary)] mb-6">
+            由{siteConfig.groupName}制作 · QQ群：{siteConfig.qqGroup}
+          </p>
         )}
 
         <div className="text-xs text-[var(--text-secondary)] space-y-1">
@@ -32,18 +36,18 @@ export default function Footer() {
           )}
 
           {isEnabled(footerConfig.version) && (
-            <p>{footerConfig.version.text}</p>
+            <p>版本号 v{pkg.version}</p>
           )}
 
-          {isEnabled(footerConfig.icp) && (
+          {siteConfig.icp?.text && (
             <p>
               <a
-                href={footerConfig.icp.href}
+                href={siteConfig.icp.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[var(--accent-purple)] transition-colors"
               >
-                {footerConfig.icp.text}
+                {siteConfig.icp.text}
               </a>
             </p>
           )}

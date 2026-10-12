@@ -6,8 +6,8 @@ import CoreContributors from '../components/CoreContributors';
 import RecruitPanel from '../components/RecruitPanel';
 import ContactPanel from '../components/ContactPanel';
 import Footer from '../components/Footer';
-import { homeSections } from '../config/homeSections';
-import { themeConfig } from '../config/theme';
+import { homeSections } from '../config/content.config';
+import { themeConfig } from '../config/theme.config';
 
 const pageEnterEnabled =
   themeConfig.effects.animations.pageEnter.status === 'enable';

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { themeConfig } from '../config/theme';
+import { themeConfig } from '../config/theme.config';
 
 const starfieldConfig = themeConfig.effects.starfield;
 const heroColors = themeConfig.home.hero;

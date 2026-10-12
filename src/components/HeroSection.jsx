@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import Glass from './Glass';
 import LiquidGlass from './LiquidGlass';
-import { themeConfig } from '../config/theme';
+import { themeConfig } from '../config/theme.config';
 
 const swiperConfig = themeConfig.effects.swiper;
 

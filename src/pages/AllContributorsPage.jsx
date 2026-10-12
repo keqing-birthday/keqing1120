@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 import { User, ArrowLeft } from 'lucide-react';
 import LiquidGlass from '../components/LiquidGlass';
 import OptimizedImage from '../components/OptimizedImage';
-import { allContributors } from '../data/allContributors';
-import { themeConfig } from '../config/theme';
+import { allContributors } from '../config/content.config';
+import { themeConfig } from '../config/theme.config';
 
 const pageEnterEnabled =
   themeConfig.effects.animations.pageEnter.status === 'enable';
@@ -84,7 +84,7 @@ export default function AllContributorsPage() {
 
           {validContributors.length === 0 && (
             <div className="text-center py-20 text-[var(--text-secondary)]">
-              暂无贡献者信息，请在 src/data/contributors.js 中添加。
+              暂无贡献者信息，请在 src/config/content.config.js 的 allContributors 中添加。
             </div>
           )}
         </div>
