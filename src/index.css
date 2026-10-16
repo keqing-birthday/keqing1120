@@ -177,7 +177,10 @@ header.hero-mode button:hover {
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    /* 用 none 而不是 translateY(0)：动画结束后不保留 transform，
+       否则 iOS Safari 会把该元素当作 backdrop-filter 的采样边界，
+       导致全站毛玻璃失效 */
+    transform: none;
   }
 }
 .animate-fade-in-up {
