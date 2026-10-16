@@ -5,6 +5,20 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // 首帧渲染前预置主题 class，避免深色偏好用户看到整页浅色闪烁（FOUC）。
+      // 逻辑需与 src/context/ThemeContext.jsx 保持一致（keqing-theme / system 回退）。
+      (function () {
+        try {
+          var saved = localStorage.getItem('keqing-theme');
+          var dark = saved === 'dark' ||
+            (saved !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          var root = document.documentElement;
+          root.classList.add(dark ? 'dark' : 'light');
+          root.style.colorScheme = dark ? 'dark' : 'light';
+        } catch (e) {}
+      })();
+    </script>
     <title>刻晴生日会 - 璃月七星玉衡星</title>
     <meta name="description" content="2026刻晴生日会筹备中，璃月七星玉衡星刻晴的生日庆典，欢迎创作者加入！" />
     <meta name="keywords" content="刻晴, 原神, 生日会, 同人, 2026" />

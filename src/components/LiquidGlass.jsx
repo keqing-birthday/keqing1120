@@ -11,7 +11,8 @@ export default function LiquidGlass({
   children,
   className = '',
   cornerRadius = 26,
-  blur = 6,
+  // blur 不传时不写 --lg-blur，模糊半径由 theme.config.js 的 effects.glassBlur 控制
+  blur,
   edge = 5,
   ...props
 }) {
@@ -20,7 +21,7 @@ export default function LiquidGlass({
       className={['liquid-glass', className].filter(Boolean).join(' ')}
       style={{
         '--lg-radius': `${cornerRadius}px`,
-        '--lg-blur': `${blur}px`,
+        ...(blur != null ? { '--lg-blur': `${blur}px` } : null),
         '--lg-edge': `${edge}px`,
       }}
       {...props}

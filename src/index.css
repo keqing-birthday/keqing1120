@@ -81,16 +81,16 @@ html {
     0 1px 0 rgba(255, 255, 255, 0.15) inset;
 }
 
-/* 浅色模式下让毛玻璃更明显 */
+/* 浅色模式下让毛玻璃更明显（读配置变量，改 theme.config.js 即生效） */
 .light .glass-card,
 :root:not(.dark) .glass-card {
-  background-color: rgba(255, 255, 255, 0.55);
-  border-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
 }
 
 .light .glass-card:hover,
 :root:not(.dark) .glass-card:hover {
-  background-color: rgba(255, 255, 255, 0.72);
+  background-color: var(--card-bg-hover);
 }
 
 /* 封面区：液态玻璃保持通透，通过浅色文字+阴影保证可读性 */
@@ -407,6 +407,11 @@ header.hero-mode button:hover {
   box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.12);
 }
 
+/* 暗色变体：dark class 与 data-theme-preset 同在 <html> 上，所以需要两种写法：
+   1) [data-theme-preset="..."].dark —— 全局暗色模式
+   2) [data-theme-preset="..."] .dark —— 封面区导航栏 header 的临时 dark（heroMode） */
+[data-theme-preset="frosted-glass"].dark .liquid-glass,
+[data-theme-preset="frosted-glass"].dark .glass-card,
 [data-theme-preset="frosted-glass"] .dark .liquid-glass,
 [data-theme-preset="frosted-glass"] .dark .glass-card {
   background: rgba(255, 255, 255, 0.05);

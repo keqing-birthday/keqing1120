@@ -80,16 +80,23 @@
   );
 }
 
-/* 底层模糊层：增加模糊强度，让玻璃更通透有层次 */
+/* 底层模糊层：增加模糊强度，让玻璃更通透有层次。
+   默认模糊半径读取 theme.config.js 的 effects.glassBlur（浅色/深色），
+   组件显式传入 blur prop 时以 prop 为准（--lg-blur 优先） */
 .liquid-glass-blur {
   position: absolute;
   inset: 0;
   z-index: 0;
   border-radius: inherit;
   pointer-events: none;
-  backdrop-filter: blur(var(--lg-blur, 10px)) saturate(1.06);
-  -webkit-backdrop-filter: blur(var(--lg-blur, 10px)) saturate(1.06);
+  backdrop-filter: blur(var(--lg-blur, var(--effects-glass-blur-light, 10px))) saturate(1.06);
+  -webkit-backdrop-filter: blur(var(--lg-blur, var(--effects-glass-blur-light, 10px))) saturate(1.06);
   background: rgba(255, 255, 255, 0.03);
+}
+
+.dark .liquid-glass-blur {
+  backdrop-filter: blur(var(--lg-blur, var(--effects-glass-blur-dark, 14px))) saturate(1.06);
+  -webkit-backdrop-filter: blur(var(--lg-blur, var(--effects-glass-blur-dark, 14px))) saturate(1.06);
 }
 
 @supports not (backdrop-filter: blur(1px)) {
@@ -168,10 +175,11 @@
     inset -1px -1px 4px rgba(0, 0, 0, 0.06);
 }
 
-/* 与旧 glass-card-hover 一致的悬停动效 */
+/* 与旧 glass-card-hover 一致的悬停动效，上浮距离读取 theme.config.js 的
+   effects.animations.cardHover.lift */
 .liquid-glass.glass-card-hover:hover,
 .liquid-glass-hover:hover {
-  transform: translateY(-6px);
+  transform: translateY(var(--effects-animations-card-hover-lift, -6px));
   filter: drop-shadow(0 16px 28px -8px var(--shadow-color));
 }
 

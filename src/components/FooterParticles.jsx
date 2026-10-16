@@ -80,7 +80,12 @@ export default function FooterParticles() {
     };
 
     const draw = () => {
-      if (!isVisible) return;
+      if (!isVisible) {
+        // 必须重置为 null，否则滚回视口后 observer 因 animationId 非 null
+        // 永远不会重新启动动画（参照 ContentParticles 的正确写法）
+        animationId = null;
+        return;
+      }
 
       const rect = canvas.getBoundingClientRect();
       ctx.clearRect(0, 0, rect.width, rect.height);

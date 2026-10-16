@@ -22,10 +22,12 @@ export function MusicProvider({ children }) {
   const playModeRef = useRef(playMode);
   const playlistRef = useRef(playlist);
   const isPlayingRef = useRef(isPlaying);
+  const currentIndexRef = useRef(currentIndex);
 
   useEffect(() => { playModeRef.current = playMode; }, [playMode]);
   useEffect(() => { playlistRef.current = playlist; }, [playlist]);
   useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
+  useEffect(() => { currentIndexRef.current = currentIndex; }, [currentIndex]);
 
   // 延迟初始化音频实例：首次播放时才创建，避免首页加载 13MB MP3
   const initAudio = useCallback(() => {
@@ -40,17 +42,28 @@ export function MusicProvider({ children }) {
     const updateTime = () => setCurrentTime(audio.currentTime);
     const updateDuration = () => setDuration(audio.duration);
     const handleEnded = () => {
+      const list = playlistRef.current;
       if (playModeRef.current === 1) {
+        // 单曲循环：直接重播
         audio.currentTime = 0;
         audio.play();
-      } else {
-        setCurrentIndex(prev => {
-          if (playModeRef.current === 2) {
-            return Math.floor(Math.random() * playlistRef.current.length);
-          }
-          return (prev + 1) % playlistRef.current.length;
-        });
+        return;
       }
+      if (list.length === 0) return;
+      let nextIndex;
+      if (playModeRef.current === 2) {
+        nextIndex = Math.floor(Math.random() * list.length);
+      } else {
+        nextIndex = (currentIndexRef.current + 1) % list.length;
+      }
+      if (nextIndex === currentIndexRef.current) {
+        // 歌单只有一首 / 随机随到当前曲：索引不变 React 不会重渲染，
+        // 「切歌后自动播放」effect 不会触发，这里直接重播，否则播放会卡死
+        audio.currentTime = 0;
+        audio.play();
+        return;
+      }
+      setCurrentIndex(nextIndex);
     };
 
     audio.addEventListener('timeupdate', updateTime);
@@ -66,6 +79,10 @@ export function MusicProvider({ children }) {
   useEffect(() => {
     const track = playlistRef.current[currentIndex];
     if (!track) return;
+
+    // 清掉上一首歌的进度，避免切歌瞬间闪现旧曲目的时长/位置
+    setCurrentTime(0);
+    setDuration(0);
 
     const audio = audioRef.current;
     if (!audio) return;
@@ -105,16 +122,20 @@ export function MusicProvider({ children }) {
   }, [play, pause]);
 
   const next = useCallback(() => {
+    const list = playlistRef.current;
+    if (list.length === 0) return;
     setCurrentIndex(prev => {
       if (playModeRef.current === 2) {
-        return Math.floor(Math.random() * playlistRef.current.length);
+        return Math.floor(Math.random() * list.length);
       }
-      return (prev + 1) % playlistRef.current.length;
+      return (prev + 1) % list.length;
     });
   }, []);
 
   const prev = useCallback(() => {
-    setCurrentIndex(prev => (prev - 1 + playlistRef.current.length) % playlistRef.current.length);
+    const list = playlistRef.current;
+    if (list.length === 0) return;
+    setCurrentIndex(prev => (prev - 1 + list.length) % list.length);
   }, []);
 
   const seek = useCallback((time) => {

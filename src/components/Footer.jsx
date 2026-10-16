@@ -53,7 +53,7 @@ export default function Footer() {
           )}
 
           {isEnabled(footerConfig.disclaimers) &&
-            footerConfig.disclaimers.items.map((text, i) => (
+            (footerConfig.disclaimers.items ?? []).map((text, i) => (
               <p key={i}>{text}</p>
             ))}
         </div>

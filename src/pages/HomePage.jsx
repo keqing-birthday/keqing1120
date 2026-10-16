@@ -24,15 +24,17 @@ export default function HomePage() {
 
   useEffect(() => {
     const scrollTo = location.state?.scrollTo;
-    if (scrollTo) {
-      const element = document.getElementById(scrollTo);
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      }
-      window.history.replaceState({}, document.title);
-    }
+    if (!scrollTo) return;
+
+    const element = document.getElementById(scrollTo);
+    window.history.replaceState({}, document.title);
+    if (!element) return;
+
+    const timer = setTimeout(() => {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [location]);
 
   const enabledSections = homeSections.filter((section) => section.status === 'enable');
