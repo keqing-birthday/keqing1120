@@ -28,7 +28,7 @@ const mimeTypes = {
 };
 
 function startServer() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const server = http.createServer(async (req, res) => {
       const urlPath = new URL(req.url, baseUrl).pathname;
       let filePath = path.join(distDir, urlPath);
@@ -56,6 +56,10 @@ function startServer() {
       }
     });
 
+    // 端口被占用时明确报错退出，而不是让构建永久挂起
+    server.on('error', (err) => {
+      reject(new Error(`预渲染服务器启动失败（端口 ${port}）：${err.message}`));
+    });
     server.listen(port, () => resolve(server));
   });
 }
@@ -65,7 +69,15 @@ async function prerender() {
   let browser;
 
   try {
-    browser = await chromium.launch();
+    try {
+      browser = await chromium.launch();
+    } catch (launchErr) {
+      // 未安装 Playwright 浏览器（如全新克隆的环境 npm ci 后）时跳过预渲染，
+      // 只影响 SEO 快照，不影响构建产物本身
+      console.warn(`⚠ 预渲染已跳过：${launchErr.message.split('\n')[0]}`);
+      console.warn('  如需启用 SEO 预渲染，请运行 npx playwright install chromium');
+      return;
+    }
 
     for (const route of routes) {
       const page = await browser.newPage();

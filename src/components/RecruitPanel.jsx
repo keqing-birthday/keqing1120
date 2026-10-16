@@ -10,7 +10,7 @@ const iconMap = {
   Users,
 };
 
-export default function RecruitPanel({ title, description, items }) {
+export default function RecruitPanel({ title, description, items = [] }) {
   return (
     <section id="recruit" className="py-20 md:py-32">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
@@ -22,7 +22,7 @@ export default function RecruitPanel({ title, description, items }) {
         </p>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-300 ease-out">
-          {items.map(({ icon, title, desc, skills }, i) => {
+          {items.map(({ icon, title, desc, skills = [] }, i) => {
             const Icon = iconMap[icon] || Users;
             return (
               <LiquidGlass

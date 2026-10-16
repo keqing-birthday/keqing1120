@@ -59,9 +59,6 @@ export const themeConfig = {
       // 边框颜色：卡片、组件等内部边框
       borderColor: 'rgba(255, 255, 255, 0.6)',
 
-      // 外层边框颜色：更明显的外边框或分割线
-      borderColorOuter: 'rgba(255, 255, 255, 0.85)',
-
       // 阴影颜色：卡片阴影、浮层阴影的底色
       shadowColor: 'rgba(0, 0, 0, 0.1)',
     },
@@ -94,9 +91,6 @@ export const themeConfig = {
 
       // 边框颜色：深色模式下的组件边框
       borderColor: 'rgba(255, 255, 255, 0.28)',
-
-      // 外层边框颜色：深色模式下的外边框
-      borderColorOuter: 'rgba(255, 255, 255, 0.4)',
 
       // 阴影颜色：深色模式下的阴影（通常更深）
       shadowColor: 'rgba(0, 0, 0, 0.45)',
@@ -411,22 +405,10 @@ export const themeConfig = {
   },
 
   // ==================== 品牌色板 ====================
-  // 主要用于 Tailwind 的 colors.keqing.*，例如 keqing-purple、keqing-gold。
-  // 这部分也会供 JSX 中 arbitrary value（如 bg-keqing-purple）使用。
+  // 用于 Tailwind 的 colors.keqing.*（如 keqing-purple），供 JSX 类名使用。
+  // 只保留全站实际用到的颜色，避免死配置。
   brand: {
-    // 品牌紫色（取主题色 accentPurple）
+    // 品牌紫色（取主题色 accentPurple）：图标、强调文字、按钮底色等
     purple: accentPurple,
-
-    // 品牌粉色（取主题色 accentPink）
-    pink: accentPink,
-
-    // 品牌金色（取主题色 accentGold）
-    gold: accentGold,
-
-    // 品牌深色：最深背景色
-    dark: '#0a0a1a',
-
-    // 品牌次深色：稍浅一点的深色背景
-    darkLight: '#1a0a2e',
   },
 };

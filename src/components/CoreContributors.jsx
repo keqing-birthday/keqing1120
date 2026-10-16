@@ -7,7 +7,7 @@ export default function CoreContributors({
   title,
   description,
   viewAllText,
-  contributors,
+  contributors = [],
 }) {
   const hasLink = (url) => url && url.trim() !== '' && url.trim() !== '#';
 

@@ -15,7 +15,7 @@ export default function HeroSection({
   description,
   primaryButton,
   secondaryButton,
-  slides,
+  slides = [],
 }) {
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -31,16 +31,18 @@ export default function HeroSection({
           {/* 左侧文字 */}
           <div className="text-center lg:text-left min-w-0">
             <h1 className="mb-4 lg:mt-[5px]">
-              <img
-                src={titleImage.src}
-                alt={titleImage.alt}
-                className="w-full max-w-lg mx-auto lg:mx-0 h-auto transition-all duration-300 ease-out"
-                width={1600}
-                height={759}
-                loading="eager"
-                decoding="async"
-                fetchpriority="high"
-              />
+              {titleImage && (
+                <img
+                  src={titleImage.src}
+                  alt={titleImage.alt}
+                  className="w-full max-w-lg mx-auto lg:mx-0 h-auto transition-all duration-300 ease-out"
+                  width={1600}
+                  height={759}
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority="high"
+                />
+              )}
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] mb-8 max-w-lg mx-auto lg:mx-0 break-words transition-all duration-300 ease-out">
               {description}

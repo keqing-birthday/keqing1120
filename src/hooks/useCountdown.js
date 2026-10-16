@@ -30,11 +30,16 @@ function calculateTimeLeft(target) {
 }
 
 export function useCountdown() {
-  const [targetDate] = useState(getTargetDate);
+  const [targetDate, setTargetDate] = useState(getTargetDate);
   const [timeLeft, setTimeLeft] = useState(() => calculateTimeLeft(targetDate));
 
   useEffect(() => {
     const timer = setInterval(() => {
+      const now = new Date();
+      if (now >= targetDate) {
+        // 已到达目标时间（用户跨着 0 点一直挂着页面）：滚动到下一个目标日期
+        setTargetDate(getTargetDate());
+      }
       setTimeLeft(calculateTimeLeft(targetDate));
     }, 1000);
 

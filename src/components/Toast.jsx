@@ -37,11 +37,14 @@ export default function Toast({ message, type = 'success', visible, trigger, onC
 
   return createPortal(
     <div
-      className="fixed top-4 right-4 z-[9999] w-80"
+      className="fixed top-4 right-4 z-[9999] w-80 max-w-[calc(100vw-2rem)]"
       style={{
-        transition: 'opacity 300ms ease-out, transform 300ms ease-out',
+        // 过渡时长跟随 theme.config.js 的 effects.toast.exitDuration
+        transition: `opacity ${EXIT_DURATION}ms ease-out, transform ${EXIT_DURATION}ms ease-out`,
         opacity: show ? 1 : 0,
-        transform: show ? 'translateX(0)' : 'translateX(100%)',
+        // 显示态用 none 而不是 translateX(0)：常驻 transform 会让该元素成为
+        // iOS Safari 上 backdrop-filter 的采样边界，导致玻璃底失效（同全站毛玻璃修复）
+        transform: show ? 'none' : 'translateX(100%)',
         pointerEvents: show ? 'auto' : 'none',
       }}
       role="status"

@@ -142,7 +142,8 @@ export default function Navbar() {
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-1">
                   {navLinks.map(({ id, label, to }) => {
-                    const isRoute = to && !to.startsWith('/#');
+                    // home 走 scrollToSection（Link 导航到同一路径是无操作，页面不会回顶）
+                    const isRoute = to && !to.startsWith('/#') && id !== 'home';
                     const active = location.pathname === to;
                     const className = `px-3 py-1.5 text-sm rounded-lg transition-colors ${
                       active
@@ -261,7 +262,7 @@ export default function Navbar() {
             ref={musicPopupRef}
             className={`absolute right-3 md:right-6 top-full mt-2 z-50 origin-top-right transition-all duration-200 ease-out ${
               isMusicCardOpen
-                ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
+                ? 'opacity-100 pointer-events-auto'
                 : 'opacity-0 scale-95 -translate-y-1 pointer-events-none'
             }`}
           >
@@ -274,7 +275,7 @@ export default function Navbar() {
       <div
         className={`md:hidden fixed top-[72px] left-3 right-3 z-40 transition-all duration-200 ease-out origin-top ${
           isMobileMenuOpen
-            ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
+            ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
         }`}
         aria-hidden={!isMobileMenuOpen}
@@ -298,7 +299,8 @@ export default function Navbar() {
             ))}
 
             {navLinks.map(({ id, label, to }, i) => {
-              const isRoute = to && !to.startsWith('/#');
+              // home 走 scrollToSection，原因同桌面端导航
+              const isRoute = to && !to.startsWith('/#') && id !== 'home';
               const baseClass = `block w-full text-left py-2 px-4 rounded-lg transition-all duration-200 transform text-gray-800 dark:text-gray-200 ${
                 isMobileMenuOpen
                   ? 'opacity-100 translate-x-0'

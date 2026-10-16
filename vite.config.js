@@ -28,8 +28,9 @@ function flattenVars(obj, prefix = '') {
     const cssKey = prefix ? `${prefix}-${kebabCase(key)}` : kebabCase(key);
     if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
       vars.push(...flattenVars(value, cssKey));
-    } else if (!Array.isArray(value)) {
-      // 只把标量值（字符串、数字）转成 CSS 变量；数组由组件直接 import 使用
+    } else if (!Array.isArray(value) && value != null) {
+      // 只把标量值（字符串、数字）转成 CSS 变量；数组由组件直接 import 使用；
+      // null/undefined 跳过，避免生成 `--key: null;` 这种非法 CSS
       vars.push(`  --${cssKey}: ${value};`);
     }
   }
@@ -53,7 +54,7 @@ function generateThemeCSS() {
   const effectsVars = config.effects ? flattenVars(config.effects, 'effects') : [];
 
   return [
-    '/* 由 src/config/theme.js 自动生成，请勿直接编辑 */',
+    '/* 由 src/config/theme.config.js 自动生成，请勿直接编辑 */',
     ':root {',
     ...lightVars,
     ...homeVars,
@@ -70,9 +71,24 @@ function generateThemeCSS() {
 
 function injectThemeVariables() {
   const cssPath = path.resolve('src/index.css').replace(/\\/g, '/');
+  const cssFsPath = path.resolve('src/index.css');
+  const themeFsPath = path.resolve('src/config/theme.config.js');
   return {
     name: 'inject-theme-variables',
     enforce: 'pre',
+    // dev 模式下监听 theme.config.js：改配置后使 index.css 模块失效并整页刷新，
+    // 重新生成注入的 CSS 变量（否则必须手动重启 dev server）
+    configureServer(server) {
+      server.watcher.add(themeFsPath);
+      server.watcher.on('change', (changed) => {
+        if (path.resolve(changed) !== themeFsPath) return;
+        const mods = server.moduleGraph.getModulesByFile(cssFsPath);
+        if (mods) {
+          for (const mod of mods) server.moduleGraph.invalidateModule(mod);
+        }
+        server.hot.send({ type: 'full-reload' });
+      });
+    },
     transform(code, id) {
       const normalizedId = id.split('?')[0].replace(/\\/g, '/');
       if (normalizedId !== cssPath) return null;
