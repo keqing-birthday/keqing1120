@@ -94,6 +94,12 @@ export default defineConfig({
     injectThemeVariables(),
     injectFontDisplaySwap(),
   ],
+  build: {
+    // Vite 8 默认用 Lightning CSS 压缩，它会将有相同值的
+    // backdrop-filter 与 -webkit-backdrop-filter 误判为重复声明并删除标准前缀，
+    // 导致生产构建毛玻璃失效。改用 esbuild 压缩保留两者。
+    cssMinify: 'esbuild',
+  },
   base: '/',
   server: {
     watch: {
