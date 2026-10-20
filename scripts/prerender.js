@@ -9,8 +9,12 @@ const distDir = path.resolve(__dirname, '../dist');
 const port = 4321;
 const baseUrl = `http://localhost:${port}`;
 
-// 需要预渲染的路由
-const routes = ['/', '/contributors'];
+// 需要预渲染的路由，以及每个路由自己的 SEO 元信息
+const siteUrl = 'https://keqing1120.cn';
+const routes = [
+  { path: '/', title: '刻晴生日会 - 璃月七星玉衡星' },
+  { path: '/contributors/', title: '全部贡献者名单 - 刻晴生日会' },
+];
 
 const mimeTypes = {
   '.html': 'text/html',
@@ -81,22 +85,38 @@ async function prerender() {
 
     for (const route of routes) {
       const page = await browser.newPage();
-      await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
+      await page.goto(`${baseUrl}${route.path}`, { waitUntil: 'networkidle' });
 
       // 等待 React 渲染完成
       await page.waitForSelector('#root', { state: 'attached' });
 
+      // 每个路由写入各自的 title / canonical / og 元信息，避免全部复用首页
+      await page.evaluate(
+        ({ title, url }) => {
+          document.title = title;
+          const setAttr = (selector, attr, value) => {
+            const el = document.querySelector(selector);
+            if (el) el.setAttribute(attr, value);
+          };
+          setAttr('link[rel="canonical"]', 'href', url);
+          setAttr('meta[property="og:url"]', 'content', url);
+          setAttr('meta[property="og:title"]', 'content', title);
+          setAttr('meta[name="twitter:title"]', 'content', title);
+        },
+        { title: route.title, url: `${siteUrl}${route.path}` },
+      );
+
       const html = await page.content();
 
       const outputPath =
-        route === '/'
+        route.path === '/'
           ? path.join(distDir, 'index.html')
-          : path.join(distDir, route, 'index.html');
+          : path.join(distDir, route.path, 'index.html');
 
       await fs.mkdir(path.dirname(outputPath), { recursive: true });
       await fs.writeFile(outputPath, html, 'utf-8');
 
-      console.log(`✓ 预渲染 ${route} -> ${outputPath}`);
+      console.log(`✓ 预渲染 ${route.path} -> ${outputPath}`);
       await page.close();
     }
   } catch (err) {
