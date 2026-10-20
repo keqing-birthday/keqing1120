@@ -1,11 +1,14 @@
 # 刻晴生日会
 
-[![Version](https://img.shields.io/badge/version-v2.0.0-blue.svg)](https://github.com/玉衡一心定天衡/keqing-birthday-2026/releases/tag/v2.0.0)
+[![Version](https://img.shields.io/badge/version-v2.2.1-blue.svg)](https://github.com/keqing-birthday/keqing1120/releases/tag/v2.2.1)
+[![Deploy](https://github.com/keqing-birthday/keqing1120/actions/workflows/deploy.yml/badge.svg)](https://github.com/keqing-birthday/keqing1120/actions/workflows/deploy.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > 原神角色「刻晴」同人生日庆祝活动页面。
 >
 > 玉衡星刻晴的生日即将到来，我们正在筹备一场盛大的庆典。无论你是才华横溢的创作者，还是热情似火的粉丝，都欢迎加入我们！
+
+线上站点：<https://keqing1120.cn/>
 
 [//]: # "可以在这里放一张网站首页截图"
 
