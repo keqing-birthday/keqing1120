@@ -11,6 +11,23 @@ node_modules
 dist
 dist-ssr
 *.local
+build/
+
+# 敏感配置与本地环境（不要提交）
+.env
+.env.*
+!.env.example
+.dev.vars
+.wrangler/
+
+# 证书与私钥
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Git 备份包（*.bundle 含完整历史，不要提交）
+*.bundle
 
 # Editor directories and files
 .vscode/*
